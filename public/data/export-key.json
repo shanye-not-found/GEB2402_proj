@@ -1,0 +1,7 @@
+{
+  "keyId": "demo-815a0095fbd72b1a3dc4b1c0",
+  "purpose": "demo",
+  "algorithm": "RSA-OAEP-256",
+  "modulusLength": 3072,
+  "spki": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAuaXR9hpiU8cDuenCdV56VlruL/NYdM+66pmIaM8bB+ho26QzEnc5cBm80ST3VbuTBidG/N4v6m8yL50WAXz9zTbJbzxjtM9+XOvRrRCNV/W7wR9YB7VXmigdo7Hsm1IN3d6O13cdQQ3ODf+IwJ3SDZNQYDn4pBjyi+fV3WvDFxmu7a222dpx2Rsu7uJJBczB7WSwTu8gR5sGkfVwISr0KiLdCmJY1e1KFArRwBreay35NWdsrqH6uz9YQCmT27hjHX/Yd282GN5SGerzSr/Vxti2JmicARSRS9Z+aGz3rzbGu5AAqrnyjsWKy3VM+j7A/IUXgZ1f8B0gylgInO2Bk+0nTRkzLxmu61YTVlPo+PMoG5a4OTheGrDaj4KA81wmGC7pGf/84F0w7995HEfSJIIHNg63bv5saCsml3X8WTZv/Wkge5ycBoAvhSjrBzf8YmvnUgJbTigKCsS/04/KH5dhuBENIoljnSpXBSGtqh7z+SDvU2CYgKaK7iQGg/fdAgMBAAE="
+}
