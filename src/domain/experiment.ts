@@ -1,4 +1,4 @@
-import type { Catalog, Event, ExperimentConfig, ExperimentRecord, Mode, PhaseRecord, ReflectionDraft, SessionState, Summary } from './types';
+import type { Catalog, Event, ExperimentConfig, ExperimentRecord, Mode, PhaseRecord, ReasonedChoiceDraft, ReflectionDraft, SessionState, Summary } from './types';
 import { assertRecord, expectedTotalFen } from '../../shared/export-format.mjs';
 import { priceFeedback, questionContext, reflectionChoices, reflectionReason, validAnswer, visibleQuestions } from './questionnaire';
 
@@ -139,7 +139,10 @@ export function transition(previous: SessionState, event: Event): SessionState {
       case 'COMPLETE':
         if (state.stage !== 'questionnaire') return state;
         for (const question of visibleQuestions(state)) {
-          if (!validAnswer(question, state.answers[question.id], true)) throw new Error(`请完成：${question.prompt}`);
+          const answer = state.answers[question.id];
+          if (validAnswer(question, answer, true)) continue;
+          if (question.kind === 'reasoned-choice' && validAnswer(question, answer, false)) throw new Error('请填写您作出价格判断的原因。');
+          throw new Error(`请完成：${question.prompt}`);
         }
         return { ...state, stage: 'complete', completedAt: new Date(event.now).toISOString(), error: '' };
       case 'ERROR':
@@ -167,6 +170,11 @@ export function makeRecord(state: SessionState): ExperimentRecord {
       return { questionId: question.id, prompt, answer: `事先预料到：${label(reflection.anticipated)}；觉得接近预算：${label(reflection.close)}。原因：${reflection.reason.trim()}`, choiceIds: [reflection.anticipated, reflection.close] };
     }
     const prompt = context ? `${context}\n${question.prompt}` : question.prompt;
+    if (question.kind === 'reasoned-choice') {
+      const { choice, reason } = value as ReasonedChoiceDraft;
+      const option = question.options.find(candidate => candidate.id === choice)!;
+      return { questionId: question.id, prompt: `${prompt}\n${option.reasonPrompt}`, answer: `${option.label}。原因：${reason.trim()}`, choiceIds: [choice], reason: reason.trim() };
+    }
     const choiceIds = Array.isArray(value) ? value : [value as string];
     const labels = choiceIds.map(id => question.options.find(option => option.id === id)!.label);
     return { questionId: question.id, prompt, answer: question.kind === 'rank' ? labels.map((label, index) => `${index + 1}. ${label}`).join('；') : labels[0], choiceIds };

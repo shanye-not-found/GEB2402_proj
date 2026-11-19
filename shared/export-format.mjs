@@ -119,7 +119,8 @@ export function assertRecord(record) {
   requireCondition(Array.isArray(record.questionnaire), '缺少问卷回答。');
   const questionIds = new Set();
   for (const answer of record.questionnaire) {
-    requireCondition(typeof answer.questionId === 'string' && !questionIds.has(answer.questionId) && typeof answer.prompt === 'string' && typeof answer.answer === 'string' && answer.answer.length <= (record.schemaVersion === '1.3' && answer.questionId === 'budget-reflection' ? 2100 : 2000), '问卷记录无效。');
+    const includesReason = record.schemaVersion === '1.3' && ['budget-reflection', 'price-value'].includes(answer.questionId);
+    requireCondition(typeof answer.questionId === 'string' && !questionIds.has(answer.questionId) && typeof answer.prompt === 'string' && typeof answer.answer === 'string' && answer.answer.length <= (includesReason ? 2100 : 2000), '问卷记录无效。');
     questionIds.add(answer.questionId);
   }
   if (record.schemaVersion === '1.3') {
@@ -144,6 +145,9 @@ export function assertRecord(record) {
       const allowed = ranking ? /^[A-F]$/ : answer.questionId === 'repurchase' ? /^[1-5]$/ : /^(good-value|about-right|expensive|unsure)$/;
       requireCondition(Array.isArray(choices) && choices.length === (ranking ? 3 : 1) && new Set(choices).size === choices.length &&
         choices.every(id => typeof id === 'string' && allowed.test(id)), '问卷选项或排序结果无效。');
+      if (answer.questionId === 'price-value' && (record.questionnaireVersion === '1.1-ranking-preview' || answer.reason !== undefined)) {
+        requireCondition(typeof answer.reason === 'string' && answer.reason.trim() && answer.reason.length <= 2000, '价格判断的原因缺失或无效。');
+      }
     }
   }
   requireCondition(timestamp(record.completedAt) >= timestamp(estimate.submittedAt), '完成时间早于重量确认。');

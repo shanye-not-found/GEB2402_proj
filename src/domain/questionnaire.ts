@@ -48,13 +48,18 @@ export function questionContext(question: Question, feedback: ReturnType<typeof 
 
 export function validAnswer(question: Question, value: AnswerDraft | undefined, complete: boolean): boolean {
   if (question.kind === 'reflection') {
-    if (!value || typeof value !== 'object' || Array.isArray(value)) return false;
+    if (!value || typeof value !== 'object' || Array.isArray(value) || !('anticipated' in value)) return false;
     const allowed = (choice: ReflectionDraft['close']) => (!complete && choice === '') || reflectionChoices.some(option => option.id === choice);
     return allowed(value.anticipated) && allowed(value.close) && typeof value.reason === 'string' &&
       value.reason.length <= question.maxLength && (!complete || Boolean(value.reason.trim()));
   }
   const allowed = new Set(question.options.map(option => option.id));
   if (question.kind === 'choice') return typeof value === 'string' && allowed.has(value);
+  if (question.kind === 'reasoned-choice') {
+    return Boolean(value && typeof value === 'object' && !Array.isArray(value) && 'choice' in value &&
+      allowed.has(value.choice) && typeof value.reason === 'string' && value.reason.length <= question.maxLength &&
+      (!complete || value.reason.trim()));
+  }
   if (!Array.isArray(value) || value.length !== 3) return false;
   const selected = value.filter(id => id !== '');
   return (!complete || selected.length === 3) && new Set(selected).size === selected.length && selected.every(id => allowed.has(id));

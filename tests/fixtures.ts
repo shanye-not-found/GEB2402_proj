@@ -31,7 +31,7 @@ export function questionnaireReady(price = 10000): SessionState {
 
 export function completed(): SessionState {
   let state = questionnaireReady();
-  state = transition(state, { type: 'ANSWER', questionId: 'price-value', value: 'expensive', now: time + 1700 });
+  state = transition(state, { type: 'ANSWER', questionId: 'price-value', value: { choice: 'expensive', reason: '比比较基准贵。' }, now: time + 1700 });
   state = transition(state, { type: 'ANSWER', questionId: 'repurchase', value: '3', now: time + 1710 });
   state = transition(state, { type: 'ANSWER', questionId: 'purchase-ranking', value: ['C', 'A', 'F'], now: time + 1720 });
   return transition(state, { type: 'COMPLETE', now: time + 1800 });

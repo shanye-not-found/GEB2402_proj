@@ -106,6 +106,7 @@ input:read-only:not([type="radio"]):not([type="checkbox"]), input:disabled { bac
 .survey-scale input { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); }
 .scale-ends { display: flex; justify-content: space-between; gap: 6px; margin-top: 6px; color: #566b5c; font-size: 13px; }
 .survey-written label { display: block; }
+.survey-choices + .survey-written { margin-top: 12px; }
 .survey-written .survey-text { display: block; min-height: 110px; border: 1px solid #a7bead; border-radius: 12px; background: #f6faf7; box-shadow: inset 0 2px 4px #173f2810; }
 .survey-written .survey-text::placeholder { color: #687a6c; }
 .text-count { margin: 4px 0 0; color: #566b5c; text-align: right; font-size: 12px; }

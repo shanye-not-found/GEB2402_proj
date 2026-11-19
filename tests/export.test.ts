@@ -66,6 +66,15 @@ describe('Web Crypto导出与独立Node解密器', () => {
     duplicateRank.questionnaire.at(-1)!.choiceIds = ['A', 'A', 'F'];
     expect(() => assertRecord(duplicateRank)).toThrow('排序');
   });
+  it('新版价格问答需要理由，旧版只选选项的记录仍可验证', () => {
+    const withoutReason = structuredClone(record);
+    const priceValue = withoutReason.questionnaire.find(answer => answer.questionId === 'price-value')!;
+    delete priceValue.reason;
+    priceValue.answer = '偏贵';
+    expect(() => assertRecord(withoutReason)).toThrow('价格判断的原因');
+    withoutReason.questionnaireVersion = '1.0-ranking-preview';
+    expect(() => assertRecord(withoutReason)).not.toThrow();
+  });
   it('离线文件解密可写JSON，拒绝覆盖文件，失败时不写部分结果', async () => {
     const directory = mkdtempSync(join(tmpdir(), 'geb2402-test-'));
     const input = join(directory, 'sample.geb2402'), key = join(directory, 'private.pem'), output = join(directory, 'sample.json');

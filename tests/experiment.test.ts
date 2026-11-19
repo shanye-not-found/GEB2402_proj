@@ -69,7 +69,7 @@ describe('价格修订与重量确认', () => {
     expect(record.priceExpectation.submissions.map(item => item.priceFen)).toEqual([3000, 3500]);
     expect(record.estimate).toMatchObject({ totalWeightGrams: 1800, priceExpectationRevision: 2 });
     expect(record.feedback.expectedTotalPriceFen).toBe(12600);
-    expect(record.questionnaire[0].answer).toBe('偏贵');
+    expect(record.questionnaire[0]).toMatchObject({ answer: '偏贵。原因：比比较基准贵。', choiceIds: ['expensive'], reason: '比比较基准贵。' });
     expect(record.questionnaire.at(-1)?.choiceIds).toEqual(['C', 'A', 'F']);
     expect(record.mode).toBe('demo');
     expect(record.task).toMatchObject({ budgetFen: 15000, extensionThresholdFen: 7500 });
@@ -127,7 +127,7 @@ describe('实际价格反馈与问卷条件', () => {
   });
   it('缺少名次、重复名次及超出量表的答案不会完成问卷', () => {
     let state = questionnaireReady();
-    state = transition(state, { type: 'ANSWER', questionId: 'price-value', value: 'good-value', now: time + 1700 });
+    state = transition(state, { type: 'ANSWER', questionId: 'price-value', value: { choice: 'good-value', reason: '符合我的预期。' }, now: time + 1700 });
     state = transition(state, { type: 'ANSWER', questionId: 'repurchase', value: '6', now: time + 1800 });
     expect(state.answers.repurchase).toBeUndefined();
     state = transition(state, { type: 'ANSWER', questionId: 'repurchase', value: '3', now: time + 1900 });
@@ -135,5 +135,12 @@ describe('实际价格反馈与问卷条件', () => {
     expect(state.answers['purchase-ranking']).toBeUndefined();
     state = transition(state, { type: 'ANSWER', questionId: 'purchase-ranking', value: ['F', '', 'C'], now: time + 2100 });
     expect(transition(state, { type: 'COMPLETE', now: time + 2200 }).stage).toBe('questionnaire');
+  });
+  it('价格对比题选了选项但原因只有空白时不能提交', () => {
+    let state = { ...completed(), stage: 'questionnaire' as const, completedAt: null };
+    const draft = transition(state, { type: 'ANSWER', questionId: 'price-value', value: { choice: 'unsure', reason: '  ' }, now: time + 2000 });
+    const blocked = transition(draft, { type: 'COMPLETE', now: time + 2100 });
+    expect(blocked.stage).toBe('questionnaire');
+    expect(blocked.error).toContain('价格判断的原因');
   });
 });

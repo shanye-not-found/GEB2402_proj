@@ -1,6 +1,14 @@
-import type { AnswerDraft, Question, ReflectionDraft } from '../../domain/types';
+import type { AnswerDraft, Question, ReasonedChoiceDraft, ReflectionDraft } from '../../domain/types';
 import { formatYuan, questionContext, reflectionChoices, reflectionReason, type priceFeedback } from '../../domain/questionnaire';
 import { RankingInput } from './RankingInput';
+
+function ReasonInput({ id, prompt, value, maxLength, onChange }: { id: string; prompt: string; value: string; maxLength: number; onChange: (value: string) => void }) {
+  return <div className="survey-written">
+    <label htmlFor={id}>{prompt}</label>
+    <textarea id={id} className="survey-text" rows={4} maxLength={maxLength} placeholder="请写下您当时的想法…" value={value} onChange={event => onChange(event.target.value)} />
+    <p className="text-count">{value.length} / {maxLength}</p>
+  </div>;
+}
 
 function ReflectionInput({ value, maxLength, onChange }: { value: ReflectionDraft; maxLength: number; onChange: (value: ReflectionDraft) => void }) {
   return <>
@@ -18,11 +26,18 @@ function ReflectionInput({ value, maxLength, onChange }: { value: ReflectionDraf
         {option.label}
       </label>)}</div>
     </fieldset>
-    {value.close && <div className="survey-written">
-      <label htmlFor="budget-reason">{reflectionReason(value.close)}</label>
-      <textarea id="budget-reason" className="survey-text" rows={4} maxLength={maxLength} placeholder="请写下您当时的想法…" value={value.reason} onChange={event => onChange({ ...value, reason: event.target.value })} />
-      <p className="text-count">{value.reason.length} / {maxLength}</p>
-    </div>}
+    {value.close && <ReasonInput id="budget-reason" prompt={reflectionReason(value.close)} value={value.reason} maxLength={maxLength} onChange={reason => onChange({ ...value, reason })} />}
+  </>;
+}
+
+function ReasonedChoiceInput({ question, value, onChange }: { question: Extract<Question, { kind: 'reasoned-choice' }>; value: ReasonedChoiceDraft; onChange: (value: ReasonedChoiceDraft) => void }) {
+  const selected = question.options.find(option => option.id === value.choice);
+  return <>
+    <div className="survey-choices">{question.options.map(option => <label key={option.id}>
+      <input type="radio" name={question.id} value={option.id} checked={selected === option} onChange={() => onChange({ choice: option.id, reason: '' })} />
+      {option.label}
+    </label>)}</div>
+    {selected && <ReasonInput id={`${question.id}-reason`} prompt={selected.reasonPrompt} value={value.reason} maxLength={question.maxLength} onChange={reason => onChange({ ...value, reason })} />}
   </>;
 }
 
@@ -58,7 +73,9 @@ export function QuestionnairePage({ feedback, porkReferenceFen, questions, answe
           <legend><span className="question-number" aria-hidden="true">{index + 1}</span>{question.prompt}</legend>
           {context && <p className="survey-context">{context}</p>}
           {question.kind === 'reflection'
-            ? <ReflectionInput value={answer && typeof answer === 'object' && !Array.isArray(answer) ? answer : { anticipated: '', close: '', reason: '' }} maxLength={question.maxLength} onChange={value => onAnswer(question.id, value)} />
+            ? <ReflectionInput value={answer && typeof answer === 'object' && !Array.isArray(answer) && 'anticipated' in answer ? answer : { anticipated: '', close: '', reason: '' }} maxLength={question.maxLength} onChange={value => onAnswer(question.id, value)} />
+            : question.kind === 'reasoned-choice'
+              ? <ReasonedChoiceInput question={question} value={answer && typeof answer === 'object' && !Array.isArray(answer) && 'choice' in answer ? answer : { choice: '', reason: '' }} onChange={value => onAnswer(question.id, value)} />
             : question.kind === 'rank'
               ? <RankingInput options={question.options} value={Array.isArray(answer) ? answer : ['', '', '']} onChange={value => onAnswer(question.id, value)} />
               : <>

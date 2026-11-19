@@ -37,9 +37,11 @@ export interface PublicKeyConfig {
 export type Question = { id: string; prompt: string } & (
   | { kind: 'reflection'; maxLength: number }
   | { kind: 'choice' | 'rank'; options: { id: string; label: string }[] }
+  | { kind: 'reasoned-choice'; maxLength: number; options: { id: string; label: string; reasonPrompt: string }[] }
 );
 export interface ReflectionDraft { anticipated: BudgetPerceptionAnswer | ''; close: BudgetPerceptionAnswer | ''; reason: string }
-export type AnswerDraft = string | string[] | ReflectionDraft;
+export interface ReasonedChoiceDraft { choice: string; reason: string }
+export type AnswerDraft = string | string[] | ReflectionDraft | ReasonedChoiceDraft;
 export interface ExperimentConfig {
   experimentId: 'GEB2402';
   appVersion: string;
@@ -133,7 +135,7 @@ export interface ExperimentRecord {
   estimate: Estimate;
   feedback: { expectedTotalPriceFen: number; actualPricePer500gFen: number | null; budgetDifferenceFen: number };
   budgetPerception: BudgetPerception;
-  questionnaire: { questionId: string; prompt: string; answer: string; choiceIds?: string[] }[];
+  questionnaire: { questionId: string; prompt: string; answer: string; choiceIds?: string[]; reason?: string }[];
   environment: { viewportWidth: number; viewportHeight: number };
   completedAt: string;
 }
