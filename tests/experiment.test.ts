@@ -6,14 +6,17 @@ import { priceFeedback, visibleQuestions } from '../src/domain/questionnaire';
 import { actualUnitFen, expectedTotalFen } from '../shared/export-format.mjs';
 
 describe('限时购物的阶段边界', () => {
-  it('74.99元主动结账追加，75元直接完成购物', () => {
-    for (const [price, expectedStage] of [[7499, 'shopping'], [7500, 'price']] as const) {
+  it('主动结账和到时均在59.99元追加、60元直接完成购物', () => {
+    for (const [price, expectedStage] of [[5999, 'shopping'], [6000, 'price']] as const) {
       let state = started(price);
       state = transition(state, { type: 'ADD', productId: source.products[0].id, phase: 'initial', now: time + 100 });
-      state = transition(state, { type: 'CHECKOUT', phase: 'initial', now: time + 200 });
-      expect(state.stage).toBe(expectedStage);
-      expect(state.shopping?.phases[0].totalPriceFen).toBe(price);
-      if (price === 7499) expect(state.shopping?.deadlineAt).toBe(time + 30200);
+      const manual = transition(state, { type: 'CHECKOUT', phase: 'initial', now: time + 200 });
+      const timeout = advanceClock(state, time + 60000);
+      expect(manual.stage).toBe(expectedStage);
+      expect(timeout.stage).toBe(expectedStage);
+      expect(manual.shopping?.phases[0].totalPriceFen).toBe(price);
+      expect(timeout.shopping?.phases[0].endReason).toBe('timeout');
+      if (price === 5999) expect(manual.shopping?.deadlineAt).toBe(time + 30200);
     }
   });
   it('到时触发追加时从原截止时间计30秒，恢复时两轮过期则全部结束', () => {
@@ -45,7 +48,7 @@ describe('限时购物的阶段边界', () => {
     expect(state.shopping?.final?.totalWeightGrams).toBe(0);
     expect(state.shopping?.phases).toHaveLength(2);
   });
-  it('超过150元仍可购买，并且减购不产生负数', () => {
+  it('超过120元仍可购买，并且减购不产生负数', () => {
     let state = started(10000);
     state = transition(state, { type: 'REMOVE', productId: source.products[0].id, phase: 'initial', now: time + 1 });
     for (let index = 0; index < 3; index += 1) state = transition(state, { type: 'ADD', productId: source.products[0].id, phase: 'initial', now: time + 10 + index });
@@ -70,9 +73,9 @@ describe('价格修订与重量确认', () => {
     expect(record.estimate).toMatchObject({ totalWeightGrams: 1800, priceExpectationRevision: 2 });
     expect(record.feedback.expectedTotalPriceFen).toBe(12600);
     expect(record.questionnaire[0]).toMatchObject({ answer: '偏贵。原因：比比较基准贵。', choiceIds: ['expensive'], reason: '比比较基准贵。' });
-    expect(record.questionnaire.at(-1)?.choiceIds).toEqual(['C', 'A', 'F']);
+    expect(record.questionnaire.at(-1)).toMatchObject({ choiceIds: ['C', 'A', 'F'], answer: '1. 预算；2. 性价比；3. 包装规格' });
     expect(record.mode).toBe('demo');
-    expect(record.task).toMatchObject({ budgetFen: 15000, extensionThresholdFen: 7500 });
+    expect(record.task).toMatchObject({ budgetFen: 12000, extensionThresholdFen: 6000 });
     expect(record.budgetPerception.answer).toBe('no');
   });
   it('未选择主观超预算判断不能继续，且不会根据真实金额自动回答', () => {
@@ -85,7 +88,7 @@ describe('价格修订与重量确认', () => {
     const confirmed = transition(answered, { type: 'SUBMIT_WEIGHT', now: time + 2200 });
     expect(confirmed.stage).toBe('questionnaire');
     expect(confirmed.budgetPerception?.answer).toBe('yes');
-    expect(confirmed.shopping?.final?.totalPriceFen).toBeLessThan(15000);
+    expect(confirmed.shopping?.final?.totalPriceFen).toBeLessThan(12000);
   });
   it('未填姓名不能开始；重量页之外不能提交重量或重新打开商品页', () => {
     const initial = createSession(EXPERIMENT, 'demo');
@@ -115,9 +118,9 @@ describe('实际价格反馈与问卷条件', () => {
     const empty = advanceClock(started(), time + 90000);
     expect(visibleQuestions(empty).map(question => question.id)).toEqual(['repurchase', 'purchase-ranking']);
   });
-  it('实际179.99元不触发；180元触发且必须提交判断和原因', () => {
-    expect(visibleQuestions(questionnaireReady(17999)).map(question => question.id)).not.toContain('budget-reflection');
-    let state = questionnaireReady(18000);
+  it('实际149.99元不触发；150元触发且必须提交判断和原因', () => {
+    expect(visibleQuestions(questionnaireReady(14999)).map(question => question.id)).not.toContain('budget-reflection');
+    let state = questionnaireReady(15000);
     expect(visibleQuestions(state)[0].id).toBe('budget-reflection');
     expect(priceFeedback(state).budgetDifferenceFen).toBe(3000);
     state = transition(state, { type: 'ANSWER', questionId: 'budget-reflection', value: { anticipated: 'no', close: 'no', reason: ' ' }, now: time + 1700 });

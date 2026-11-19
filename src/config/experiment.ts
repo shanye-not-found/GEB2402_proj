@@ -2,14 +2,14 @@ import type { ExperimentConfig } from '../domain/types';
 
 export const EXPERIMENT: ExperimentConfig = {
   experimentId: 'GEB2402',
-  appVersion: '1.3.1',
-  configVersion: '1.3.1',
+  appVersion: '1.3.2',
+  configVersion: '1.3.2',
   noticeVersion: '1.0',
-  questionnaireVersion: '1.1-ranking-preview',
-  questionnaireIsPlaceholder: true,
-  budgetFen: 15000,
+  questionnaireVersion: '1.2-ranked-factors',
+  questionnaireIsPlaceholder: false,
+  budgetFen: 12000,
   initialDurationMs: 60000,
-  extensionThresholdFen: 7500,
+  extensionThresholdFen: 6000,
   extensionDurationMs: 30000,
   priceExpectationBasisWeightGrams: 500,
   budgetReflectionThresholdFen: 3000,
@@ -26,8 +26,13 @@ export const EXPERIMENT: ExperimentConfig = {
       { id: '1', label: '1 · 完全不愿意' }, { id: '2', label: '2 · 不太愿意' }, { id: '3', label: '3 · 一般' },
       { id: '4', label: '4 · 比较愿意' }, { id: '5', label: '5 · 非常愿意' },
     ] },
-    { id: 'purchase-ranking', kind: 'rank', prompt: '挑选时，哪些因素最影响您的购买意愿？请按重要程度选出前三项。', options:
-      ['A', 'B', 'C', 'D', 'E', 'F'].map(letter => ({ id: letter, label: `选项 ${letter}` })),
-    },
+    { id: 'purchase-ranking', kind: 'rank', prompt: '挑选时，哪些因素最影响您的购买意愿？请按重要程度选出前三项。', options: [
+      { id: 'A', label: '性价比' },
+      { id: 'B', label: '个人口味' },
+      { id: 'C', label: '预算' },
+      { id: 'D', label: '食材原料' },
+      { id: 'E', label: '外观和商品描述' },
+      { id: 'F', label: '包装规格' },
+    ] },
   ],
 };

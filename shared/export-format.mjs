@@ -145,7 +145,7 @@ export function assertRecord(record) {
       const allowed = ranking ? /^[A-F]$/ : answer.questionId === 'repurchase' ? /^[1-5]$/ : /^(good-value|about-right|expensive|unsure)$/;
       requireCondition(Array.isArray(choices) && choices.length === (ranking ? 3 : 1) && new Set(choices).size === choices.length &&
         choices.every(id => typeof id === 'string' && allowed.test(id)), '问卷选项或排序结果无效。');
-      if (answer.questionId === 'price-value' && (record.questionnaireVersion === '1.1-ranking-preview' || answer.reason !== undefined)) {
+      if (answer.questionId === 'price-value' && (['1.1-ranking-preview', '1.2-ranked-factors'].includes(record.questionnaireVersion) || answer.reason !== undefined)) {
         requireCondition(typeof answer.reason === 'string' && answer.reason.trim() && answer.reason.length <= 2000, '价格判断的原因缺失或无效。');
       }
     }

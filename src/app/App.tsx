@@ -117,7 +117,7 @@ export function App() {
     <header className="site-header"><a href={import.meta.env.BASE_URL} onClick={event => event.preventDefault()} aria-label="GEB2402 小组项目"><strong>GEB2402</strong><span>零食选购实验</span></a><span className="step-label">第 {step} 步 / 共 7 步</span></header>
     <div className="progress-track" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={7} aria-label="实验进度"><div style={{ width: `${step / 7 * 100}%` }} /></div>
     <main>
-      {state.mode === 'demo' && <p className="demo-notice">演示模式 · {state.catalog?.products.length ?? resources?.catalog.products.length ?? '…'} 种商品 · 排序选项待确认</p>}
+      {state.mode === 'demo' && <p className="demo-notice">演示模式 · {state.catalog?.products.length ?? resources?.catalog.products.length ?? '…'} 种商品{state.config.questionnaireIsPlaceholder && ' · 排序选项待确认'}</p>}
       {saveWarning && <p className="notice error" role="alert">{saveWarning}</p>}
       {state.error && state.stage !== 'questionnaire' && <p className="notice error" role="alert">{state.error}</p>}
       {content}
