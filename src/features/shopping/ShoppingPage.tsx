@@ -25,8 +25,8 @@ export function ShoppingPage({ catalog, shopping, now, onChange, onCheckout }: {
           <div className="product-info">
             <h2>{product.name}</h2><p>{product.description}</p>
             <div className="product-facts">
-              <p className="product-price">¥{(product.unitPriceFen / 100).toFixed(2)}<span> / {product.saleUnitLabel}</span></p>
               <p className="product-spec">规格 {displaySpec}</p>
+              <p className="product-price">¥{(product.unitPriceFen / 100).toFixed(2)}<span> / {product.saleUnitLabel}</span></p>
             </div>
           </div>
           <div className="product-controls">

@@ -1,8 +1,9 @@
 import type { ExperimentConfig, Mode, SessionState } from '../domain/types';
 import { advanceClock, createSession, makeRecord, parseHundredths, summarize } from '../domain/experiment';
+import { priceFeedback, validAnswer, visibleQuestions } from '../domain/questionnaire';
 
-const STORAGE_KEY = 'geb2402.session.v1.2';
-const LEGACY_STORAGE_KEY = 'geb2402.session.v1.1';
+const STORAGE_KEY = 'geb2402.session.v1.3';
+const LEGACY_STORAGE_KEYS = ['geb2402.session.v1.1', 'geb2402.session.v1.2'];
 
 export function probeStorage(): void {
   const key = 'geb2402.storage-probe';
@@ -18,11 +19,12 @@ export function probeStorage(): void {
 function assertStoredSession(value: unknown, config: ExperimentConfig): asserts value is SessionState {
   if (!value || typeof value !== 'object') throw new Error('当前记录不是有效实验状态。');
   const state = value as SessionState;
-  const stages = ['consent', 'name', 'instructions', 'shopping', 'price', 'weight', 'questionnaire', 'complete'];
-  if (state.storageVersion !== '1.2' || state.config?.configVersion !== config.configVersion || !stages.includes(state.stage) || !['demo', 'research'].includes(state.mode) || typeof state.nameDraft !== 'string' || typeof state.priceDraft !== 'string' || typeof state.weightDraft !== 'string' || !['', 'yes', 'no', 'unsure'].includes(state.budgetPerceptionDraft) || !Array.isArray(state.priceSubmissions) || !state.answers || typeof state.answers !== 'object') throw new Error('当前记录版本不兼容或内容损坏。');
+  const postEstimate = ['questionnaire', 'complete'];
+  const stages = ['consent', 'name', 'instructions', 'shopping', 'price', 'weight', ...postEstimate];
+  if (state.storageVersion !== '1.3' || state.config?.configVersion !== config.configVersion || !stages.includes(state.stage) || !['demo', 'research'].includes(state.mode) || typeof state.nameDraft !== 'string' || typeof state.priceDraft !== 'string' || typeof state.weightDraft !== 'string' || !['', 'yes', 'no', 'unsure'].includes(state.budgetPerceptionDraft) || !Array.isArray(state.priceSubmissions) || !state.answers || typeof state.answers !== 'object') throw new Error('当前记录版本不兼容或内容损坏。');
   if (state.stage !== 'consent' && (!state.sessionId || !state.consentAcceptedAt || !Number.isFinite(Date.parse(state.consentAcceptedAt)))) throw new Error('当前记录缺少参与确认。');
   if (!['consent', 'name'].includes(state.stage) && (Array.from(state.nameDraft.trim()).length === 0 || Array.from(state.nameDraft.trim()).length > 80)) throw new Error('当前记录缺少姓名。');
-  if (['shopping', 'price', 'weight', 'questionnaire', 'complete'].includes(state.stage)) {
+  if (['shopping', 'price', 'weight', ...postEstimate].includes(state.stage)) {
     const shopping = state.shopping;
     if (!state.catalog || !Array.isArray(state.catalog.products) || state.catalog.products.length === 0 || !state.publicKey || !shopping || !['initial', 'extension'].includes(shopping.phase) || !Number.isSafeInteger(shopping.deadlineAt) || !Number.isSafeInteger(shopping.startedAt) || !Number.isSafeInteger(shopping.phaseStartedAt) || !Array.isArray(shopping.phases) || !shopping.quantities || typeof shopping.quantities !== 'object') throw new Error('当前记录缺少商品快照或计时信息。');
     summarize(state.catalog, shopping.quantities);
@@ -35,9 +37,17 @@ function assertStoredSession(value: unknown, config: ExperimentConfig): asserts 
     if (submission.revision !== index + 1 || !Number.isSafeInteger(submission.priceFen) || submission.priceFen <= 0 || !Number.isFinite(time) || time < lastTime) throw new Error('价格提交记录无效。');
     lastTime = time;
   }
-  if (['weight', 'questionnaire', 'complete'].includes(state.stage) && state.priceSubmissions.length === 0) throw new Error('尚未提交有效预期价格。');
-  if (['questionnaire', 'complete'].includes(state.stage) && (!state.estimate || parseHundredths(state.weightDraft, true) === null || state.estimate.priceExpectationRevision !== state.priceSubmissions.length)) throw new Error('重量尚未绑定最新价格。');
-  if (['questionnaire', 'complete'].includes(state.stage) && (!state.budgetPerception || !['yes', 'no', 'unsure'].includes(state.budgetPerception.answer))) throw new Error('尚未回答超预算感受问题。');
+  if (['weight', ...postEstimate].includes(state.stage) && state.priceSubmissions.length === 0) throw new Error('尚未提交有效预期价格。');
+  if (postEstimate.includes(state.stage)) {
+    if (!state.estimate || parseHundredths(state.weightDraft, true) !== Math.round(state.estimate.totalWeightGrams * 100) || state.estimate.priceExpectationRevision !== state.priceSubmissions.length) throw new Error('重量尚未绑定最新价格。');
+    if (!state.budgetPerception || !['yes', 'no', 'unsure'].includes(state.budgetPerception.answer)) throw new Error('尚未回答超预算感受问题。');
+    priceFeedback(state);
+    const questions = visibleQuestions(state);
+    for (const [id, value] of Object.entries(state.answers)) {
+      const question = questions.find(candidate => candidate.id === id);
+      if (!question || !validAnswer(question, value, false)) throw new Error('问卷草稿记录无效。');
+    }
+  }
   if (state.stage === 'complete') makeRecord(state);
 }
 
@@ -46,7 +56,7 @@ export function loadSession(config: ExperimentConfig, mode: Mode): { state: Sess
   try {
     const text = sessionStorage.getItem(STORAGE_KEY);
     if (!text) {
-      if (sessionStorage.getItem(LEGACY_STORAGE_KEY)) throw new Error('当前记录属于旧预算与旧问题版本，请清除旧演示记录后重新开始。');
+      if (LEGACY_STORAGE_KEYS.some(key => sessionStorage.getItem(key))) throw new Error('当前标签页保留了旧版实验。若还需要该记录，请另开标签页；否则可清除记录后重新开始。');
       return { state: fallback, error: '' };
     }
     const stored: unknown = JSON.parse(text);
@@ -64,5 +74,5 @@ export function saveSession(state: SessionState): void {
 
 export function clearSession(): void {
   sessionStorage.removeItem(STORAGE_KEY);
-  sessionStorage.removeItem(LEGACY_STORAGE_KEY);
+  for (const key of LEGACY_STORAGE_KEYS) sessionStorage.removeItem(key);
 }

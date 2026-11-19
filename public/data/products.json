@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0",
-  "catalogVersion": "2026-11-17.1",
+  "catalogVersion": "2026-11-19.1",
   "currency": "CNY",
   "pricingPolicy": "采用截图醒目价格作为固定实验单价；不模拟优惠券、会员、满减、搭配购或前N件限制。多包装仍按原整份价格购买。",
-  "sourceImageCount": 22,
-  "uniqueProductCount": 26,
+  "sourceImageCount": 49,
+  "uniqueProductCount": 51,
   "requiredProductCount": 30,
-  "missingProductCount": 4,
-  "readyForExperiment": false,
+  "missingProductCount": 0,
+  "readyForExperiment": true,
   "products": [
     {
       "id": "lays-mini-honey-butter-40g",
@@ -162,7 +162,8 @@
       },
       "imagePath": "products/want-want-snow-rice-crackers-84g.webp",
       "galleryImagePaths": [
-        "products/want-want-snow-rice-crackers-84g.webp"
+        "products/want-want-snow-rice-crackers-84g.webp",
+        "products/want-want-snow-rice-crackers-84g-2.webp"
       ]
     },
     {
@@ -664,7 +665,8 @@
       },
       "imagePath": "products/glico-pejoy-matcha-mousse-48g.webp",
       "galleryImagePaths": [
-        "products/glico-pejoy-matcha-mousse-48g.webp"
+        "products/glico-pejoy-matcha-mousse-48g.webp",
+        "products/glico-pejoy-matcha-mousse-48g-2.webp"
       ],
       "shelfLifeText": "365天"
     },
@@ -694,6 +696,656 @@
         "products/xiangxiangzui-bamboo-tofu-pepper-160g.webp"
       ],
       "shelfLifeText": "12个月"
+    },
+    {
+      "id": "jinzai-mixed-fish-96g",
+      "name": "劲仔混合口味小鱼",
+      "brand": "劲仔",
+      "category": "海味零食",
+      "flavor": "混合口味",
+      "description": "混合口味卤制小鱼。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 96,
+      "saleUnitLabel": "袋",
+      "sortOrder": 27,
+      "specLabel": "约8g × 12包（共96g，均分折算）",
+      "packaging": {
+        "innerCount": 12,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "包",
+        "innerWeightBasis": "calculated_average",
+        "notes": "8g 为整份重量除以包数得出的均分值。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": 8.0
+      },
+      "imagePath": "products/jinzai-mixed-fish-96g.webp",
+      "galleryImagePaths": [
+        "products/jinzai-mixed-fish-96g.webp"
+      ]
+    },
+    {
+      "id": "dingdong-sea-salt-milk-biscuits-180g",
+      "name": "叮咚定制海盐鲜牛乳小圆饼干",
+      "brand": "叮咚定制",
+      "category": "饼干",
+      "flavor": "海盐鲜牛乳味",
+      "description": "鲜牛乳与海盐制成，咸中带甜。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 180,
+      "saleUnitLabel": "袋",
+      "sortOrder": 28,
+      "specLabel": "180g / 袋（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/dingdong-sea-salt-milk-biscuits-180g.webp",
+      "galleryImagePaths": [
+        "products/dingdong-sea-salt-milk-biscuits-180g.webp"
+      ]
+    },
+    {
+      "id": "zhouxiaojian-original-duck-neck-150g",
+      "name": "周小贱原味鸭脖",
+      "brand": "周小贱",
+      "category": "肉类零食",
+      "flavor": "原味",
+      "description": "整根鸭脖慢卤，肉质紧实。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 150,
+      "saleUnitLabel": "份",
+      "sortOrder": 29,
+      "specLabel": "30g × 5根（共150g）",
+      "packaging": {
+        "innerCount": 5,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "根",
+        "innerWeightBasis": "explicit",
+        "notes": "标题明确标出单根规格和根数。",
+        "innerWeightGrams": 30,
+        "averageInnerWeightGrams": 30.0
+      },
+      "imagePath": "products/zhouxiaojian-original-duck-neck-150g.webp",
+      "galleryImagePaths": [
+        "products/zhouxiaojian-original-duck-neck-150g.webp"
+      ]
+    },
+    {
+      "id": "crown-jollypong-puffed-barley-74g",
+      "name": "克丽安大麦粒",
+      "brand": "Crown 克丽安",
+      "category": "谷物膨化",
+      "flavor": "",
+      "description": "谷物香气，可搭配牛奶。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 74,
+      "saleUnitLabel": "袋",
+      "sortOrder": 30,
+      "specLabel": "74g / 袋",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/crown-jollypong-puffed-barley-74g.webp",
+      "galleryImagePaths": [
+        "products/crown-jollypong-puffed-barley-74g.webp"
+      ]
+    },
+    {
+      "id": "dingdong-brown-sugar-jelly-450g",
+      "name": "叮咚定制红糖味大碗冰粉",
+      "brand": "叮咚定制",
+      "category": "甜品果冻",
+      "flavor": "红糖味",
+      "description": "红糖味冰粉，配山楂、葡萄干、红小豆和花生芝麻碎。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 450,
+      "saleUnitLabel": "碗",
+      "sortOrder": 31,
+      "specLabel": "450g / 碗",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/dingdong-brown-sugar-jelly-450g.webp",
+      "galleryImagePaths": [
+        "products/dingdong-brown-sugar-jelly-450g.webp"
+      ]
+    },
+    {
+      "id": "white-rabbit-peanut-toffee-120g",
+      "name": "大白兔花生太妃糖",
+      "brand": "大白兔",
+      "category": "糖果",
+      "flavor": "花生太妃味",
+      "description": "奶糖与香脆花生仁结合。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 120,
+      "saleUnitLabel": "份",
+      "sortOrder": 32,
+      "specLabel": "120g / 份（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/white-rabbit-peanut-toffee-120g.webp",
+      "galleryImagePaths": [
+        "products/white-rabbit-peanut-toffee-120g.webp"
+      ]
+    },
+    {
+      "id": "thai-shrimp-chips-80g",
+      "name": "泰式虾片",
+      "brand": "",
+      "category": "海味零食",
+      "flavor": "泰式虾味",
+      "description": "片身蓬松酥脆，带轻微辣味。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 80,
+      "saleUnitLabel": "包",
+      "sortOrder": 33,
+      "specLabel": "80g / 包（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/thai-shrimp-chips-80g.webp",
+      "galleryImagePaths": [
+        "products/thai-shrimp-chips-80g.webp"
+      ]
+    },
+    {
+      "id": "strong-konjac-jelly-mixed-400g",
+      "name": "喜之郎蒟蒻果冻六口味分享装",
+      "brand": "喜之郎",
+      "category": "甜品果冻",
+      "flavor": "六种水果口味",
+      "description": "含红葡萄、水蜜桃、青梅、草莓、芒果和百香果口味。",
+      "unitPriceFen": 1250,
+      "unitWeightGrams": 400,
+      "saleUnitLabel": "袋",
+      "sortOrder": 34,
+      "specLabel": "400g / 袋（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "只标注6种口味，不等于6包；小包装件数未标注。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/strong-konjac-jelly-mixed-400g.webp",
+      "galleryImagePaths": [
+        "products/strong-konjac-jelly-mixed-400g.webp"
+      ]
+    },
+    {
+      "id": "sanqun-original-fabing-228g",
+      "name": "三群原味老面法饼",
+      "brand": "三群",
+      "category": "糕点面包",
+      "flavor": "原味",
+      "description": "老面发酵，松软带嚼劲。",
+      "unitPriceFen": 790,
+      "unitWeightGrams": 228,
+      "saleUnitLabel": "盒",
+      "sortOrder": 35,
+      "specLabel": "228g / 盒",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/sanqun-original-fabing-228g.webp",
+      "galleryImagePaths": [
+        "products/sanqun-original-fabing-228g.webp"
+      ]
+    },
+    {
+      "id": "finute-garlic-shrimp-chips-82g",
+      "name": "FINUTE 蒜味虾片",
+      "brand": "FINUTE",
+      "category": "海味零食",
+      "flavor": "蒜味",
+      "description": "蒜香风味，虾肉含量不低于13%。",
+      "unitPriceFen": 1190,
+      "unitWeightGrams": 82,
+      "saleUnitLabel": "袋",
+      "sortOrder": 36,
+      "specLabel": "82g / 袋",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/finute-garlic-shrimp-chips-82g.webp",
+      "galleryImagePaths": [
+        "products/finute-garlic-shrimp-chips-82g.webp"
+      ]
+    },
+    {
+      "id": "bami-sea-salt-coffee-crisp-45g",
+      "name": "芭米海盐咖啡酥",
+      "brand": "芭米",
+      "category": "糕点面包",
+      "flavor": "海盐咖啡味",
+      "description": "咖啡香气，带海盐的微咸味。",
+      "unitPriceFen": 690,
+      "unitWeightGrams": 45,
+      "saleUnitLabel": "份",
+      "sortOrder": 37,
+      "specLabel": "45g / 份",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/bami-sea-salt-coffee-crisp-45g.webp",
+      "galleryImagePaths": [
+        "products/bami-sea-salt-coffee-crisp-45g.webp"
+      ]
+    },
+    {
+      "id": "oishi-corn-roll-40g",
+      "name": "上好佳玉米卷",
+      "brand": "上好佳",
+      "category": "谷物膨化",
+      "flavor": "",
+      "description": "经典烘烤风味，咸香酥脆。",
+      "unitPriceFen": 390,
+      "unitWeightGrams": 40,
+      "saleUnitLabel": "袋",
+      "sortOrder": 38,
+      "specLabel": "40g / 袋",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/oishi-corn-roll-40g.webp",
+      "galleryImagePaths": [
+        "products/oishi-corn-roll-40g.webp"
+      ]
+    },
+    {
+      "id": "original-pork-jerky-128g",
+      "name": "特级原味猪肉脯",
+      "brand": "",
+      "category": "肉类零食",
+      "flavor": "原味",
+      "description": "原切猪肉脯，咸甜适中，独立包装。",
+      "unitPriceFen": 1690,
+      "unitWeightGrams": 128,
+      "saleUnitLabel": "盒",
+      "sortOrder": 39,
+      "specLabel": "128g / 盒（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/original-pork-jerky-128g.webp",
+      "galleryImagePaths": [
+        "products/original-pork-jerky-128g.webp"
+      ]
+    },
+    {
+      "id": "xiangu-fiber-vegetable-crackers-165g",
+      "name": "纤谷纤焙十蔬咸香脆饼干",
+      "brand": "纤谷纤焙",
+      "category": "饼干",
+      "flavor": "十蔬咸香",
+      "description": "添加十种蔬菜，烘烤制成，独立小包。",
+      "unitPriceFen": 690,
+      "unitWeightGrams": 165,
+      "saleUnitLabel": "袋",
+      "sortOrder": 40,
+      "specLabel": "165g / 袋（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/xiangu-fiber-vegetable-crackers-165g.webp",
+      "galleryImagePaths": [
+        "products/xiangu-fiber-vegetable-crackers-165g.webp"
+      ]
+    },
+    {
+      "id": "relie-sweet-cream-popcorn-120g",
+      "name": "热烈奶油甜味爆米花",
+      "brand": "热烈",
+      "category": "谷物膨化",
+      "flavor": "奶油甜味",
+      "description": "玉米粒膨松酥脆，带奶油甜香。",
+      "unitPriceFen": 580,
+      "unitWeightGrams": 120,
+      "saleUnitLabel": "包",
+      "sortOrder": 41,
+      "specLabel": "120g / 包",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/relie-sweet-cream-popcorn-120g.webp",
+      "galleryImagePaths": [
+        "products/relie-sweet-cream-popcorn-120g.webp"
+      ]
+    },
+    {
+      "id": "omou-original-beef-crisps-20g",
+      "name": "Omou 噢哞原切牛肉脆",
+      "brand": "Omou 噢哞",
+      "category": "肉类零食",
+      "flavor": "原味",
+      "description": "原切牛肉，经多段低温烘烤制成。",
+      "unitPriceFen": 1390,
+      "unitWeightGrams": 20,
+      "saleUnitLabel": "包",
+      "sortOrder": 42,
+      "specLabel": "20g / 包",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/omou-original-beef-crisps-20g.webp",
+      "galleryImagePaths": [
+        "products/omou-original-beef-crisps-20g.webp"
+      ]
+    },
+    {
+      "id": "orion-tomato-hollow-potato-sticks-70g",
+      "name": "好丽友呀！土豆番茄酱味空心薯条",
+      "brand": "好丽友",
+      "category": "薯片薯粒",
+      "flavor": "番茄酱味",
+      "description": "空心薯条，酸甜酥脆。",
+      "unitPriceFen": 458,
+      "unitWeightGrams": 70,
+      "saleUnitLabel": "袋",
+      "sortOrder": 43,
+      "specLabel": "70g / 袋",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/orion-tomato-hollow-potato-sticks-70g.webp",
+      "galleryImagePaths": [
+        "products/orion-tomato-hollow-potato-sticks-70g.webp"
+      ]
+    },
+    {
+      "id": "lusheng-beef-crispy-bone-66g",
+      "name": "绿盛牛脆骨",
+      "brand": "绿盛",
+      "category": "肉类零食",
+      "flavor": "",
+      "description": "牛脆骨慢卤入味，脆弹有嚼劲。",
+      "unitPriceFen": 990,
+      "unitWeightGrams": 66,
+      "saleUnitLabel": "份",
+      "sortOrder": 44,
+      "specLabel": "66g / 份",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/lusheng-beef-crispy-bone-66g.webp",
+      "galleryImagePaths": [
+        "products/lusheng-beef-crispy-bone-66g.webp"
+      ]
+    },
+    {
+      "id": "taohechu-nanru-crisps-108g",
+      "name": "陶和笙南乳味巧果",
+      "brand": "陶和笙",
+      "category": "糕点面包",
+      "flavor": "南乳味",
+      "description": "南乳汁与面皮制成，咸香酥脆。",
+      "unitPriceFen": 1290,
+      "unitWeightGrams": 108,
+      "saleUnitLabel": "包",
+      "sortOrder": 45,
+      "specLabel": "108g / 包",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/taohechu-nanru-crisps-108g.webp",
+      "galleryImagePaths": [
+        "products/taohechu-nanru-crisps-108g.webp"
+      ]
+    },
+    {
+      "id": "master-kong-lemon-soda-sandwich-100g",
+      "name": "康师傅3+2柠檬味苏打夹心饼干",
+      "brand": "康师傅",
+      "category": "饼干",
+      "flavor": "柠檬味",
+      "description": "三层苏打饼，两层柠檬味夹心。",
+      "unitPriceFen": 690,
+      "unitWeightGrams": 100,
+      "saleUnitLabel": "盒",
+      "sortOrder": 46,
+      "specLabel": "100g / 盒（独立小包，包数未标注）",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": "小包",
+        "innerWeightBasis": "unknown",
+        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/master-kong-lemon-soda-sandwich-100g.webp",
+      "galleryImagePaths": [
+        "products/master-kong-lemon-soda-sandwich-100g.webp"
+      ]
+    },
+    {
+      "id": "frutips-mixed-fruit-gummies-60g",
+      "name": "趣满果花心杂果果汁软糖",
+      "brand": "趣满果",
+      "category": "糖果",
+      "flavor": "六种水果口味",
+      "description": "含苹果、柠檬、草莓、白桃、香橙和黑加仑口味。",
+      "unitPriceFen": 790,
+      "unitWeightGrams": 60,
+      "saleUnitLabel": "份",
+      "sortOrder": 47,
+      "specLabel": "60g / 份",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/frutips-mixed-fruit-gummies-60g.webp",
+      "galleryImagePaths": [
+        "products/frutips-mixed-fruit-gummies-60g.webp"
+      ]
+    },
+    {
+      "id": "california-field-crunch-peanuts-238g",
+      "name": "加州原野鱼皮花生",
+      "brand": "加州原野",
+      "category": "坚果栗类",
+      "flavor": "",
+      "description": "高油酸花生，烘烤制成。",
+      "unitPriceFen": 1590,
+      "unitWeightGrams": 238,
+      "saleUnitLabel": "罐",
+      "sortOrder": 48,
+      "specLabel": "238g / 罐",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/california-field-crunch-peanuts-238g.webp",
+      "galleryImagePaths": [
+        "products/california-field-crunch-peanuts-238g.webp"
+      ]
+    },
+    {
+      "id": "glico-tomato-garden-biscuits-50g",
+      "name": "格力高番茄味菜园小饼",
+      "brand": "格力高",
+      "category": "饼干",
+      "flavor": "番茄味",
+      "description": "番茄风味，添加全麦粉。",
+      "unitPriceFen": 450,
+      "unitWeightGrams": 50,
+      "saleUnitLabel": "份",
+      "sortOrder": 49,
+      "specLabel": "50g / 份",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/glico-tomato-garden-biscuits-50g.webp",
+      "galleryImagePaths": [
+        "products/glico-tomato-garden-biscuits-50g.webp"
+      ]
+    },
+    {
+      "id": "dingdong-v5-butter-egg-rolls-200g",
+      "name": "叮咚 V5 黄油蛋卷",
+      "brand": "叮咚 V5",
+      "category": "糕点面包",
+      "flavor": "黄油味",
+      "description": "黄油与鸡蛋制成，酥脆有奶香。",
+      "unitPriceFen": 1980,
+      "unitWeightGrams": 200,
+      "saleUnitLabel": "盒",
+      "sortOrder": 50,
+      "specLabel": "200g / 盒",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/dingdong-v5-butter-egg-rolls-200g.webp",
+      "galleryImagePaths": [
+        "products/dingdong-v5-butter-egg-rolls-200g.webp"
+      ]
+    },
+    {
+      "id": "oishi-sweet-corn-pops-80g",
+      "name": "上好佳玉米田园泡",
+      "brand": "上好佳",
+      "category": "谷物膨化",
+      "flavor": "经典口味",
+      "description": "玉米与小麦制成，清香酥脆。",
+      "unitPriceFen": 559,
+      "unitWeightGrams": 80,
+      "saleUnitLabel": "袋",
+      "sortOrder": 51,
+      "specLabel": "80g / 袋",
+      "packaging": {
+        "innerCount": null,
+        "innerCountApproximate": false,
+        "innerUnitLabel": null,
+        "innerWeightBasis": "unknown",
+        "notes": "原图未标注内包数，不根据展示数量猜测。",
+        "innerWeightGrams": null,
+        "averageInnerWeightGrams": null
+      },
+      "imagePath": "products/oishi-sweet-corn-pops-80g.webp",
+      "galleryImagePaths": [
+        "products/oishi-sweet-corn-pops-80g.webp"
+      ]
     }
   ]
 }

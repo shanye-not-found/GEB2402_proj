@@ -1,6 +1,7 @@
 import { useEffect, useReducer, useState } from 'react';
 import { EXPERIMENT } from '../config/experiment';
 import { makeRecord, transition } from '../domain/experiment';
+import { priceFeedback, visibleQuestions } from '../domain/questionnaire';
 import type { Catalog, Event, Mode, PublicKeyConfig, Stage } from '../domain/types';
 import { loadSession, saveSession, clearSession } from '../services/session';
 import { loadResources, prepareExperiment } from '../services/resources';
@@ -107,7 +108,7 @@ export function App() {
     case 'shopping': content = state.catalog && state.shopping && <ShoppingPage catalog={state.catalog} shopping={state.shopping} now={clock} onChange={(productId, delta, phase) => send({ type: delta === 1 ? 'ADD' : 'REMOVE', productId, phase, now: Date.now() })} onCheckout={phase => send({ type: 'CHECKOUT', phase, now: Date.now() })} />; break;
     case 'price':
     case 'weight': content = <ExperimentQuestionsPage priceDraft={state.priceDraft} weightDraft={state.weightDraft} budgetAnswer={state.budgetPerceptionDraft} priceConfirmed={state.stage === 'weight'} priceFen={state.priceSubmissions.at(-1)?.priceFen ?? null} onPriceChange={value => send({ type: 'PRICE_DRAFT', value, now: Date.now() })} onPriceConfirm={() => send({ type: 'SUBMIT_PRICE', now: Date.now() })} onEditPrice={() => send({ type: 'EDIT_PRICE', now: Date.now() })} onWeightChange={value => send({ type: 'WEIGHT_DRAFT', value, now: Date.now() })} onBudgetChange={value => send({ type: 'BUDGET_PERCEPTION_DRAFT', value, now: Date.now() })} onNext={() => send({ type: 'SUBMIT_WEIGHT', now: Date.now() })} />; break;
-    case 'questionnaire': content = <QuestionnairePage questions={state.config.questions} answers={state.answers} onAnswer={(questionId, value) => send({ type: 'ANSWER', questionId, value, now: Date.now() })} onSubmit={() => send({ type: 'COMPLETE', now: Date.now() })} />; break;
+    case 'questionnaire': content = <QuestionnairePage feedback={priceFeedback(state)} porkReferenceFen={state.config.porkReferenceFen} questions={visibleQuestions(state)} answers={state.answers} error={state.error} onAnswer={(questionId, value) => send({ type: 'ANSWER', questionId, value, now: Date.now() })} onSubmit={() => send({ type: 'COMPLETE', now: Date.now() })} />; break;
     case 'complete': content = <CompletionPage busy={exporting} status={downloadStatus} onDownload={exportData} onReset={restart} />; break;
   }
 
@@ -116,9 +117,9 @@ export function App() {
     <header className="site-header"><a href={import.meta.env.BASE_URL} onClick={event => event.preventDefault()} aria-label="GEB2402 小组项目"><strong>GEB2402</strong><span>零食选购实验</span></a><span className="step-label">第 {step} 步 / 共 7 步</span></header>
     <div className="progress-track" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={7} aria-label="实验进度"><div style={{ width: `${step / 7 * 100}%` }} /></div>
     <main>
-      {state.mode === 'demo' && <p className="demo-notice">演示模式 · {state.catalog?.products.length ?? resources?.catalog.products.length ?? '…'} 种商品 · 占位问卷</p>}
+      {state.mode === 'demo' && <p className="demo-notice">演示模式 · {state.catalog?.products.length ?? resources?.catalog.products.length ?? '…'} 种商品 · 排序选项待确认</p>}
       {saveWarning && <p className="notice error" role="alert">{saveWarning}</p>}
-      {state.error && <p className="notice error" role="alert">{state.error}</p>}
+      {state.error && state.stage !== 'questionnaire' && <p className="notice error" role="alert">{state.error}</p>}
       {content}
     </main>
     <footer>GEB2402 小组项目 · 数据仅用于本项目</footer>

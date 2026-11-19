@@ -56,9 +56,9 @@ form > input, .input-with-unit, .question { margin-bottom: 24px; }
 .product-image { width: 136px; height: 136px; object-fit: contain; flex-shrink: 0; }
 .product-info { flex: 1; min-width: 0; }
 .product-info p { margin: 0 0 6px; color: #68716a; font-size: 14px; }
-.product-facts { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 16px; margin-top: 8px; }
+.product-facts { display: grid; gap: 2px; margin-top: 8px; }
 .product-facts .product-spec, .product-facts .product-price { margin: 0; color: #202520; font-weight: 650; }
-.product-facts .product-spec { font-size: 17px; }
+.product-facts .product-spec { font-size: 16px; }
 .product-facts .product-price { font-size: 20px; }
 .product-price span { color: #68716a; font-size: 13px; font-weight: 400; }
 .product-controls { display: grid; gap: 6px; min-width: 128px; }
@@ -75,6 +75,53 @@ form > input, .input-with-unit, .question { margin-bottom: 24px; }
 .budget-options input { width: 18px; height: 18px; margin: 0; accent-color: #245b3b; }
 input:read-only:not([type="radio"]):not([type="checkbox"]), input:disabled { background: #f2f4f2; }
 .budget-options:disabled { color: #7d857f; }
+.estimate-question .input-with-unit { gap: 0; overflow: hidden; border: 1px solid #afb9b1; border-radius: 10px; background: #f2f6f3; }
+.estimate-question .input-with-unit:focus-within { outline: 3px solid #7fa78b; outline-offset: 2px; }
+.estimate-question .input-with-unit input { border: 0; border-radius: 0; outline: none; }
+.estimate-question .input-with-unit span { padding: 0 12px; font-size: 14px; }
+.estimate-result { padding: 14px 16px; border: 1px solid #c9ddcd; border-radius: 10px; background: #edf6ef; color: #245b3b; }
+.estimate-result strong { display: block; font-size: 28px; line-height: 1.3; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.estimate-result p { margin: 4px 0 0; color: #44634c; font-size: 14px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+.price-feedback { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin: 0 0 28px; overflow: hidden; border: 1px solid #d0e1d5; border-radius: 12px; background: #d0e1d5; }
+.price-feedback > div { min-width: 0; padding: 12px; background: #f3f8f4; }
+.price-feedback > div:nth-child(-n+2) { background: #e6f1e8; }
+.price-feedback dt { color: #44634c; font-size: 13px; }
+.price-feedback dd { margin: 4px 0 0; color: #204f34; font-size: clamp(16px, 4.5vw, 23px); line-height: 1.25; font-weight: 750; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.price-feedback small { display: inline-block; font-size: 12px; font-weight: 500; white-space: nowrap; }
+.survey-question, .reflection-choice { min-width: 0; padding: 0; border: 0; }
+.survey-question { margin: 0 0 24px; padding: 8px 0 22px; border-bottom: 1px solid #dfe4df; }
+.survey-question > legend { padding: 0; font-size: 17px; font-weight: 700; }
+.question-number { display: inline-grid; place-items: center; width: 25px; height: 25px; margin-right: 8px; border-radius: 50%; color: #245b3b; background: #e8f1ea; font-size: 13px; }
+.survey-context { margin: 2px 0 12px; padding: 9px 12px; border-radius: 8px; color: #315b40; background: #eef5ef; }
+.reflection-choice { margin: 0 0 14px; }
+.reflection-choice legend, .survey-written label { padding: 0; margin-bottom: 6px; font-weight: 600; }
+.survey-choices { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
+.survey-choices label { position: relative; display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; min-width: 44px; padding: 6px 9px; border: 1px solid #bccdc0; border-radius: 8px; cursor: pointer; }
+.survey-choices label:has(input:checked) { border-color: #245b3b; background: #e8f3eb; color: #204b31; }
+.survey-choices label:has(input:focus-visible) { outline: 3px solid #7fa78b; outline-offset: 2px; }
+.survey-choices input { width: 16px; height: 16px; margin: 0; accent-color: #245b3b; }
+.survey-scale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.survey-scale label { min-width: 0; font-weight: 650; }
+.survey-scale input { position: absolute; width: 1px; height: 1px; clip-path: inset(50%); }
+.scale-ends { display: flex; justify-content: space-between; gap: 6px; margin-top: 6px; color: #566b5c; font-size: 13px; }
+.survey-written label { display: block; }
+.survey-written .survey-text { display: block; min-height: 110px; border: 1px solid #a7bead; border-radius: 12px; background: #f6faf7; box-shadow: inset 0 2px 4px #173f2810; }
+.survey-written .survey-text::placeholder { color: #687a6c; }
+.text-count { margin: 4px 0 0; color: #566b5c; text-align: right; font-size: 12px; }
+.ranking .muted { margin: 0 0 8px; }
+.rank-slots, .rank-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.rank-slot { display: grid; place-items: center; gap: 2px; min-width: 0; padding: 6px 3px; border-style: dashed; background: #f7faf8; color: #486250; font-size: 13px; line-height: 1.3; }
+.rank-slot span { font-size: 15px; font-weight: 700; }
+.rank-slot strong { overflow-wrap: anywhere; }
+.rank-slot[data-selected="true"], .rank-slot[data-drop="true"] { border-style: solid; border-color: #548767; background: #e5f1e9; color: #1d5032; }
+.rank-slot[data-drop="true"] { outline: 2px solid #548767; }
+.rank-options { margin-top: 10px; }
+.rank-options button, .rank-slot[data-selected="true"] { touch-action: none; user-select: none; }
+.rank-options button { min-width: 0; padding: 6px 2px; font-size: 13px; cursor: grab; overflow-wrap: anywhere; }
+.rank-options button[data-in-rank="true"] { background: #edf5ef; color: #245b3b; }
+.rank-options b { margin-right: 4px; color: #548767; }
+.rank-ghost { position: fixed; z-index: 3; padding: 4px 8px; border-radius: 6px; color: white; background: #245b3b; pointer-events: none; }
 footer { max-width: 1040px; margin: auto; padding: 24px 20px; color: #68716a; font-size: 12px; }
 @media (max-width: 600px) {
   .site-header { padding: 20px 16px; }

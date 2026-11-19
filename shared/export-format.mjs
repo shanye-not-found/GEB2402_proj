@@ -6,6 +6,20 @@ export function additionalData(keyId) {
   return new TextEncoder().encode(`${FORMAT}|1|${keyId}|RSA-OAEP-256|A256GCM`);
 }
 
+function roundedRatio(numerator, denominator) {
+  const value = Number((numerator + denominator / 2n) / denominator);
+  if (!Number.isSafeInteger(value)) throw new Error('计算出的价格超出可记录范围，请检查输入。');
+  return value;
+}
+
+export function expectedTotalFen(pricePer500gFen, weightHundredths) {
+  return roundedRatio(BigInt(pricePer500gFen) * BigInt(weightHundredths), 50000n);
+}
+
+export function actualUnitFen(totalPriceFen, totalWeightGrams) {
+  return totalWeightGrams === 0 ? null : roundedRatio(BigInt(totalPriceFen) * 500n, BigInt(totalWeightGrams));
+}
+
 function requireCondition(condition, message) {
   if (!condition) throw new Error(message);
 }
@@ -48,7 +62,7 @@ function assertSummary(summary) {
 }
 
 export function assertRecord(record) {
-  requireCondition(record && ['1.1', '1.2'].includes(record.schemaVersion) && record.experimentId === 'GEB2402', '不支持的实验JSON版本，当前解密器支持1.1和1.2。');
+  requireCondition(record && ['1.1', '1.2', '1.3'].includes(record.schemaVersion) && record.experimentId === 'GEB2402', '不支持的实验JSON版本，当前解密器支持1.1、1.2和1.3。');
   requireCondition(record.mode === 'demo' || record.mode === 'research', '缺少演示/正式实验标记。');
   requireCondition(typeof record.sessionId === 'string' && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(record.sessionId), '实验ID无效。');
   requireCondition(record.participant && typeof record.participant.realName === 'string' && record.participant.realName.trim().length > 0 && Array.from(record.participant.realName.trim()).length <= 80, '姓名缺失或过长。');
@@ -98,15 +112,39 @@ export function assertRecord(record) {
   requireCondition(expectation.priceFen === expectation.submissions.at(-1).priceFen, '最终价格不是最新提交值。');
   const estimate = record.estimate;
   requireCondition(estimate && typeof estimate.totalWeightGrams === 'number' && Number.isFinite(estimate.totalWeightGrams) && estimate.totalWeightGrams >= 0 && Number.isSafeInteger(Math.round(estimate.totalWeightGrams * 100)) && Math.abs(estimate.totalWeightGrams * 100 - Math.round(estimate.totalWeightGrams * 100)) < 0.001 && estimate.priceExpectationRevision === expectation.submissions.length && timestamp(estimate.submittedAt) >= previousEnd, '估计重量无效或没有关联最新预期价格。');
-  if (record.schemaVersion === '1.2') {
+  if (record.schemaVersion !== '1.1') {
     requireCondition(record.budgetPerception && ['yes', 'no', 'unsure'].includes(record.budgetPerception.answer) && timestamp(record.budgetPerception.submittedAt) >= timestamp(estimate.submittedAt), '超预算感受回答缺失或无效。');
     requireCondition(timestamp(record.completedAt) >= timestamp(record.budgetPerception.submittedAt), '完成时间早于超预算感受提交时间。');
   }
   requireCondition(Array.isArray(record.questionnaire), '缺少问卷回答。');
   const questionIds = new Set();
   for (const answer of record.questionnaire) {
-    requireCondition(typeof answer.questionId === 'string' && !questionIds.has(answer.questionId) && typeof answer.prompt === 'string' && typeof answer.answer === 'string' && answer.answer.length <= 2000, '问卷记录无效。');
+    requireCondition(typeof answer.questionId === 'string' && !questionIds.has(answer.questionId) && typeof answer.prompt === 'string' && typeof answer.answer === 'string' && answer.answer.length <= (record.schemaVersion === '1.3' && answer.questionId === 'budget-reflection' ? 2100 : 2000), '问卷记录无效。');
     questionIds.add(answer.questionId);
+  }
+  if (record.schemaVersion === '1.3') {
+    requireCondition(integer(task.budgetReflectionThresholdFen, 1) && integer(task.porkReferenceFen, 1), '问卷比较基准无效。');
+    const budgetDifference = shopping.final.totalPriceFen - task.budgetFen;
+    const actualPrice = actualUnitFen(shopping.final.totalPriceFen, shopping.final.totalWeightGrams);
+    requireCondition(record.feedback?.expectedTotalPriceFen === expectedTotalFen(expectation.priceFen, Math.round(estimate.totalWeightGrams * 100)) &&
+      record.feedback.actualPricePer500gFen === actualPrice && record.feedback.budgetDifferenceFen === budgetDifference, '价格反馈与实验记录不一致。');
+    const expectedQuestions = [
+      ...(budgetDifference >= task.budgetReflectionThresholdFen ? ['budget-reflection'] : []),
+      ...(actualPrice !== null ? ['price-value'] : []),
+      'repurchase', 'purchase-ranking',
+    ];
+    requireCondition(record.questionnaire.length === expectedQuestions.length && record.questionnaire.every((answer, index) => answer.questionId === expectedQuestions[index] && answer.answer.trim()), '问卷回答缺失或问题与实际结果不符。');
+    for (const answer of record.questionnaire) {
+      const choices = answer.choiceIds;
+      if (answer.questionId === 'budget-reflection') {
+        requireCondition(Array.isArray(choices) && choices.length === 2 && choices.every(id => ['yes', 'no', 'unsure'].includes(id)), '预算追问选项无效。');
+        continue;
+      }
+      const ranking = answer.questionId === 'purchase-ranking';
+      const allowed = ranking ? /^[A-F]$/ : answer.questionId === 'repurchase' ? /^[1-5]$/ : /^(good-value|about-right|expensive|unsure)$/;
+      requireCondition(Array.isArray(choices) && choices.length === (ranking ? 3 : 1) && new Set(choices).size === choices.length &&
+        choices.every(id => typeof id === 'string' && allowed.test(id)), '问卷选项或排序结果无效。');
+    }
   }
   requireCondition(timestamp(record.completedAt) >= timestamp(estimate.submittedAt), '完成时间早于重量确认。');
   requireCondition(record.environment && integer(record.environment.viewportWidth, 1) && integer(record.environment.viewportHeight, 1), '缺少有效的实验视口信息。');

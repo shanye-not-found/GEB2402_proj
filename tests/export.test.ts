@@ -55,7 +55,16 @@ describe('Web Crypto导出与独立Node解密器', () => {
     const { budgetPerception, ...legacy } = structuredClone(record);
     expect(() => assertRecord({ ...legacy, schemaVersion: '1.1' })).not.toThrow();
     expect(() => assertRecord({ ...legacy, schemaVersion: '1.2' })).toThrow();
+    expect(() => assertRecord({ ...record, schemaVersion: '1.2' })).not.toThrow();
     expect(() => assertRecord({ ...record, budgetPerception: { ...budgetPerception, answer: 'invalid' } })).toThrow();
+  });
+  it('1.3校验预计总价和排序的真实性约束', () => {
+    const wrongPrice = structuredClone(record);
+    wrongPrice.feedback.expectedTotalPriceFen += 1;
+    expect(() => assertRecord(wrongPrice)).toThrow('价格反馈');
+    const duplicateRank = structuredClone(record);
+    duplicateRank.questionnaire.at(-1)!.choiceIds = ['A', 'A', 'F'];
+    expect(() => assertRecord(duplicateRank)).toThrow('排序');
   });
   it('离线文件解密可写JSON，拒绝覆盖文件，失败时不写部分结果', async () => {
     const directory = mkdtempSync(join(tmpdir(), 'geb2402-test-'));

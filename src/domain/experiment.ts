@@ -1,9 +1,10 @@
-import type { Catalog, Event, ExperimentConfig, ExperimentRecord, Mode, PhaseRecord, SessionState, Summary } from './types';
-import { assertRecord } from '../../shared/export-format.mjs';
+import type { Catalog, Event, ExperimentConfig, ExperimentRecord, Mode, PhaseRecord, ReflectionDraft, SessionState, Summary } from './types';
+import { assertRecord, expectedTotalFen } from '../../shared/export-format.mjs';
+import { priceFeedback, questionContext, reflectionChoices, reflectionReason, validAnswer, visibleQuestions } from './questionnaire';
 
 export function createSession(config: ExperimentConfig, mode: Mode): SessionState {
   return {
-    storageVersion: '1.2', stage: 'consent', mode, sessionId: null, consentAcceptedAt: null,
+    storageVersion: '1.3', stage: 'consent', mode, sessionId: null, consentAcceptedAt: null,
     nameDraft: '', config: structuredClone(config), catalog: null, publicKey: null, shopping: null,
     priceDraft: '', weightDraft: '', priceSubmissions: [], estimate: null, budgetPerceptionDraft: '', budgetPerception: null, answers: {},
     completedAt: null, viewport: { viewportWidth: 0, viewportHeight: 0 }, error: '',
@@ -104,7 +105,7 @@ export function transition(previous: SessionState, event: Event): SessionState {
       case 'PRICE_DRAFT':
         return state.stage === 'price' ? { ...state, priceDraft: event.value, error: '' } : state;
       case 'WEIGHT_DRAFT':
-        return state.stage === 'weight' ? { ...state, weightDraft: event.value, error: '' } : state;
+        return state.stage === 'weight' && event.value !== state.weightDraft ? { ...state, weightDraft: event.value, budgetPerceptionDraft: '', error: '' } : state;
       case 'SUBMIT_PRICE': {
         if (state.stage !== 'price') return state;
         const priceFen = parseHundredths(state.priceDraft, false);
@@ -113,14 +114,16 @@ export function transition(previous: SessionState, event: Event): SessionState {
         return { ...state, stage: 'weight', estimate: null, budgetPerception: null, priceSubmissions: [...state.priceSubmissions, submission], error: '' };
       }
       case 'EDIT_PRICE':
-        return state.stage === 'weight' ? { ...state, stage: 'price', estimate: null, budgetPerception: null, error: '' } : state;
+        return state.stage === 'weight' ? { ...state, stage: 'price', estimate: null, budgetPerception: null, budgetPerceptionDraft: '', error: '' } : state;
       case 'BUDGET_PERCEPTION_DRAFT':
-        if (state.stage !== 'weight' || !['yes', 'no', 'unsure'].includes(event.value)) return state;
+        if (state.stage !== 'weight' || parseHundredths(state.weightDraft, true) === null || !['yes', 'no', 'unsure'].includes(event.value)) return state;
         return { ...state, budgetPerceptionDraft: event.value, error: '' };
       case 'SUBMIT_WEIGHT': {
-        if (state.stage !== 'weight' || state.priceSubmissions.length === 0) return state;
+        const price = state.priceSubmissions.at(-1);
+        if (state.stage !== 'weight' || !price) return state;
         const hundredths = parseHundredths(state.weightDraft, true);
         if (hundredths === null) throw new Error('请输入大于等于0且最多两位小数的估计重量。');
+        expectedTotalFen(price.priceFen, hundredths);
         if (!['yes', 'no', 'unsure'].includes(state.budgetPerceptionDraft)) throw new Error('请选择您是否觉得自己花超预算了。');
         const answer = state.budgetPerceptionDraft;
         if (answer !== 'yes' && answer !== 'no' && answer !== 'unsure') return state;
@@ -129,13 +132,15 @@ export function transition(previous: SessionState, event: Event): SessionState {
       }
       case 'ANSWER': {
         if (state.stage !== 'questionnaire') return state;
-        const question = state.config.questions.find(question => question.id === event.questionId);
-        if (!question) return state;
-        return { ...state, answers: { ...state.answers, [question.id]: event.value.slice(0, question.maxLength) }, error: '' };
+        const question = visibleQuestions(state).find(question => question.id === event.questionId);
+        if (!question || !validAnswer(question, event.value, false)) return state;
+        return { ...state, answers: { ...state.answers, [question.id]: event.value }, error: '' };
       }
       case 'COMPLETE':
         if (state.stage !== 'questionnaire') return state;
-        for (const question of state.config.questions) if (question.required && !(state.answers[question.id] ?? '').trim()) throw new Error(`请回答：${question.prompt}`);
+        for (const question of visibleQuestions(state)) {
+          if (!validAnswer(question, state.answers[question.id], true)) throw new Error(`请完成：${question.prompt}`);
+        }
         return { ...state, stage: 'complete', completedAt: new Date(event.now).toISOString(), error: '' };
       case 'ERROR':
         return { ...state, error: event.message };
@@ -148,17 +153,32 @@ export function transition(previous: SessionState, event: Event): SessionState {
 export function makeRecord(state: SessionState): ExperimentRecord {
   const shopping = state.shopping;
   if (state.stage !== 'complete' || !state.sessionId || !state.consentAcceptedAt || !state.catalog || !shopping?.final || shopping.endedAt === null || !state.estimate || !state.budgetPerception || !state.completedAt || state.priceSubmissions.length === 0) throw new Error('实验尚未完成，不能导出。');
-  const questionnaire = [];
-  for (const question of state.config.questions) questionnaire.push({ questionId: question.id, prompt: question.prompt, answer: state.answers[question.id] ?? '' });
   const config = state.config;
+  const feedback = priceFeedback(state);
+  const { expectedTotalPriceFen, actualPricePer500gFen, budgetDifferenceFen } = feedback;
+  const questionnaire = visibleQuestions(state).map(question => {
+    const value = state.answers[question.id];
+    if (!validAnswer(question, value, true)) throw new Error(`缺少回答：${question.prompt}`);
+    const context = questionContext(question, feedback, config.porkReferenceFen);
+    if (question.kind === 'reflection') {
+      const reflection = value as ReflectionDraft;
+      const label = (id: string) => reflectionChoices.find(option => option.id === id)!.label;
+      const prompt = `${context}\n事先预料到会超出这么多吗？当时觉得花费接近预算吗？${reflectionReason(reflection.close)}`;
+      return { questionId: question.id, prompt, answer: `事先预料到：${label(reflection.anticipated)}；觉得接近预算：${label(reflection.close)}。原因：${reflection.reason.trim()}`, choiceIds: [reflection.anticipated, reflection.close] };
+    }
+    const prompt = context ? `${context}\n${question.prompt}` : question.prompt;
+    const choiceIds = Array.isArray(value) ? value : [value as string];
+    const labels = choiceIds.map(id => question.options.find(option => option.id === id)!.label);
+    return { questionId: question.id, prompt, answer: question.kind === 'rank' ? labels.map((label, index) => `${index + 1}. ${label}`).join('；') : labels[0], choiceIds };
+  });
   const record: ExperimentRecord = {
-    schemaVersion: '1.2', experimentId: 'GEB2402', mode: state.mode, sessionId: state.sessionId,
+    schemaVersion: '1.3', experimentId: 'GEB2402', mode: state.mode, sessionId: state.sessionId,
     appVersion: config.appVersion, configVersion: config.configVersion, catalogVersion: state.catalog.catalogVersion, questionnaireVersion: config.questionnaireVersion,
     participant: { realName: state.nameDraft.trim() }, consent: { accepted: true, noticeVersion: config.noticeVersion, acceptedAt: state.consentAcceptedAt },
-    task: { budgetFen: config.budgetFen, initialDurationMs: config.initialDurationMs, extensionThresholdFen: config.extensionThresholdFen, extensionDurationMs: config.extensionDurationMs, priceExpectationBasisWeightGrams: 500 },
+    task: { budgetFen: config.budgetFen, initialDurationMs: config.initialDurationMs, extensionThresholdFen: config.extensionThresholdFen, extensionDurationMs: config.extensionDurationMs, priceExpectationBasisWeightGrams: 500, budgetReflectionThresholdFen: config.budgetReflectionThresholdFen, porkReferenceFen: config.porkReferenceFen },
     shopping: { startedAt: new Date(shopping.startedAt).toISOString(), endedAt: new Date(shopping.endedAt).toISOString(), extensionApplied: shopping.extensionApplied, phases: shopping.phases, final: shopping.final },
     priceExpectation: { basisWeightGrams: 500, priceFen: state.priceSubmissions.at(-1)!.priceFen, submissions: state.priceSubmissions },
-    estimate: state.estimate, budgetPerception: state.budgetPerception, questionnaire, environment: state.viewport, completedAt: state.completedAt,
+    estimate: state.estimate, feedback: { expectedTotalPriceFen, actualPricePer500gFen, budgetDifferenceFen }, budgetPerception: state.budgetPerception, questionnaire, environment: state.viewport, completedAt: state.completedAt,
   };
   assertRecord(record);
   return record;

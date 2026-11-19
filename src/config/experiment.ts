@@ -2,19 +2,29 @@ import type { ExperimentConfig } from '../domain/types';
 
 export const EXPERIMENT: ExperimentConfig = {
   experimentId: 'GEB2402',
-  appVersion: '1.2.0',
-  configVersion: '1.2.0',
+  appVersion: '1.3.0',
+  configVersion: '1.3.0',
   noticeVersion: '1.0',
-  questionnaireVersion: 'placeholder-1.0',
+  questionnaireVersion: '1.0-ranking-preview',
   questionnaireIsPlaceholder: true,
   budgetFen: 15000,
   initialDurationMs: 60000,
   extensionThresholdFen: 7500,
   extensionDurationMs: 30000,
   priceExpectationBasisWeightGrams: 500,
+  budgetReflectionThresholdFen: 3000,
+  porkReferenceFen: 5000,
   questions: [
-    { id: 'q1', prompt: '问题 1（待替换）', required: false, maxLength: 2000 },
-    { id: 'q2', prompt: '问题 2（待替换）', required: false, maxLength: 2000 },
-    { id: 'q3', prompt: '问题 3（待替换）', required: false, maxLength: 2000 },
+    { id: 'budget-reflection', kind: 'reflection', prompt: '回顾您当时对预算的判断', maxLength: 2000 },
+    { id: 'price-value', kind: 'choice', prompt: '和这个价格相比，您觉得刚才买的零食划算还是偏贵？', options: [
+      { id: 'good-value', label: '划算' }, { id: 'about-right', label: '价格适中' }, { id: 'expensive', label: '偏贵' }, { id: 'unsure', label: '不确定' },
+    ] },
+    { id: 'repurchase', kind: 'choice', prompt: '知道这些数据后，您还有多大意愿购买刚才的零食？', options: [
+      { id: '1', label: '1 · 完全不愿意' }, { id: '2', label: '2 · 不太愿意' }, { id: '3', label: '3 · 一般' },
+      { id: '4', label: '4 · 比较愿意' }, { id: '5', label: '5 · 非常愿意' },
+    ] },
+    { id: 'purchase-ranking', kind: 'rank', prompt: '挑选时，哪些因素最影响您的购买意愿？请按重要程度选出前三项。', options:
+      ['A', 'B', 'C', 'D', 'E', 'F'].map(letter => ({ id: letter, label: `选项 ${letter}` })),
+    },
   ],
 };

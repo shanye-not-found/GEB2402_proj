@@ -34,12 +34,12 @@ export interface PublicKeyConfig {
   modulusLength: number;
   spki: string;
 }
-export interface Question {
-  id: string;
-  prompt: string;
-  required: boolean;
-  maxLength: number;
-}
+export type Question = { id: string; prompt: string } & (
+  | { kind: 'reflection'; maxLength: number }
+  | { kind: 'choice' | 'rank'; options: { id: string; label: string }[] }
+);
+export interface ReflectionDraft { anticipated: BudgetPerceptionAnswer | ''; close: BudgetPerceptionAnswer | ''; reason: string }
+export type AnswerDraft = string | string[] | ReflectionDraft;
 export interface ExperimentConfig {
   experimentId: 'GEB2402';
   appVersion: string;
@@ -52,6 +52,8 @@ export interface ExperimentConfig {
   extensionThresholdFen: number;
   extensionDurationMs: number;
   priceExpectationBasisWeightGrams: 500;
+  budgetReflectionThresholdFen: number;
+  porkReferenceFen: number;
   questions: Question[];
 }
 export interface LineItem {
@@ -93,7 +95,7 @@ export interface PriceSubmission { revision: number; priceFen: number; submitted
 export interface Estimate { totalWeightGrams: number; priceExpectationRevision: number; submittedAt: string }
 export interface BudgetPerception { answer: BudgetPerceptionAnswer; submittedAt: string }
 export interface SessionState {
-  storageVersion: '1.2';
+  storageVersion: '1.3';
   stage: Stage;
   mode: Mode;
   sessionId: string | null;
@@ -109,13 +111,13 @@ export interface SessionState {
   estimate: Estimate | null;
   budgetPerceptionDraft: BudgetPerceptionAnswer | '';
   budgetPerception: BudgetPerception | null;
-  answers: Record<string, string>;
+  answers: Record<string, AnswerDraft>;
   completedAt: string | null;
   viewport: { viewportWidth: number; viewportHeight: number };
   error: string;
 }
 export interface ExperimentRecord {
-  schemaVersion: '1.2';
+  schemaVersion: '1.3';
   experimentId: 'GEB2402';
   mode: Mode;
   sessionId: string;
@@ -125,12 +127,13 @@ export interface ExperimentRecord {
   questionnaireVersion: string;
   participant: { realName: string };
   consent: { accepted: true; noticeVersion: string; acceptedAt: string };
-  task: { budgetFen: number; initialDurationMs: number; extensionThresholdFen: number; extensionDurationMs: number; priceExpectationBasisWeightGrams: 500 };
+  task: { budgetFen: number; initialDurationMs: number; extensionThresholdFen: number; extensionDurationMs: number; priceExpectationBasisWeightGrams: 500; budgetReflectionThresholdFen: number; porkReferenceFen: number };
   shopping: { startedAt: string; endedAt: string; extensionApplied: boolean; phases: PhaseRecord[]; final: Summary };
   priceExpectation: { basisWeightGrams: 500; priceFen: number; submissions: PriceSubmission[] };
   estimate: Estimate;
+  feedback: { expectedTotalPriceFen: number; actualPricePer500gFen: number | null; budgetDifferenceFen: number };
   budgetPerception: BudgetPerception;
-  questionnaire: { questionId: string; prompt: string; answer: string }[];
+  questionnaire: { questionId: string; prompt: string; answer: string; choiceIds?: string[] }[];
   environment: { viewportWidth: number; viewportHeight: number };
   completedAt: string;
 }
@@ -147,6 +150,6 @@ export type Event = { now: number } & (
   | { type: 'PRICE_DRAFT' | 'WEIGHT_DRAFT'; value: string }
   | { type: 'BUDGET_PERCEPTION_DRAFT'; value: BudgetPerceptionAnswer }
   | { type: 'SUBMIT_PRICE' | 'EDIT_PRICE' | 'SUBMIT_WEIGHT' | 'COMPLETE' }
-  | { type: 'ANSWER'; questionId: string; value: string }
+  | { type: 'ANSWER'; questionId: string; value: AnswerDraft }
   | { type: 'ERROR'; message: string }
 );

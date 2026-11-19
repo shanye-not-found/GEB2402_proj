@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { createSession, advanceClock, transition, parseHundredths, makeRecord } from '../src/domain/experiment';
 import { EXPERIMENT } from '../src/config/experiment';
-import { completed, source, started, time } from './fixtures';
+import { completed, questionnaireReady, source, started, time } from './fixtures';
+import { priceFeedback, visibleQuestions } from '../src/domain/questionnaire';
+import { actualUnitFen, expectedTotalFen } from '../shared/export-format.mjs';
 
 describe('限时购物的阶段边界', () => {
   it('74.99元主动结账追加，75元直接完成购物', () => {
@@ -66,7 +68,9 @@ describe('价格修订与重量确认', () => {
     const record = makeRecord(state);
     expect(record.priceExpectation.submissions.map(item => item.priceFen)).toEqual([3000, 3500]);
     expect(record.estimate).toMatchObject({ totalWeightGrams: 1800, priceExpectationRevision: 2 });
-    expect(record.questionnaire[0].answer).toBe('测试回答');
+    expect(record.feedback.expectedTotalPriceFen).toBe(12600);
+    expect(record.questionnaire[0].answer).toBe('偏贵');
+    expect(record.questionnaire.at(-1)?.choiceIds).toEqual(['C', 'A', 'F']);
     expect(record.mode).toBe('demo');
     expect(record.task).toMatchObject({ budgetFen: 15000, extensionThresholdFen: 7500 });
     expect(record.budgetPerception.answer).toBe('no');
@@ -90,5 +94,46 @@ describe('价格修订与重量确认', () => {
     expect(transition(state, { type: 'EDIT_PRICE', now: time + 2000 }).stage).toBe('complete');
     expect(transition(state, { type: 'START', catalog: source, publicKey: state.publicKey!, viewport: state.viewport, now: time + 2000 }).stage).toBe('complete');
     expect(() => makeRecord(started())).toThrow();
+  });
+  it('修改克重或重新编辑价格后，要重新作答主观预算问题', () => {
+    const state = { ...questionnaireReady(), stage: 'weight' as const };
+    const changed = transition(state, { type: 'WEIGHT_DRAFT', value: '1500', now: time + 2000 });
+    expect(changed.budgetPerceptionDraft).toBe('');
+    expect(transition(changed, { type: 'SUBMIT_WEIGHT', now: time + 2100 }).stage).toBe('weight');
+    const priceEdited = transition(state, { type: 'EDIT_PRICE', now: time + 2000 });
+    expect(priceEdited.budgetPerceptionDraft).toBe('');
+    expect(priceEdited.weightDraft).toBe('1800');
+  });
+});
+
+describe('实际价格反馈与问卷条件', () => {
+  it('金额四舍五入到分，空购物车无实际单价', () => {
+    expect(expectedTotalFen(500, 50)).toBe(1);
+    expect(expectedTotalFen(3500, 150000)).toBe(10500);
+    expect(actualUnitFen(12948, 955)).toBe(6779);
+    expect(actualUnitFen(0, 0)).toBeNull();
+    const empty = advanceClock(started(), time + 90000);
+    expect(visibleQuestions(empty).map(question => question.id)).toEqual(['repurchase', 'purchase-ranking']);
+  });
+  it('实际179.99元不触发；180元触发且必须提交判断和原因', () => {
+    expect(visibleQuestions(questionnaireReady(17999)).map(question => question.id)).not.toContain('budget-reflection');
+    let state = questionnaireReady(18000);
+    expect(visibleQuestions(state)[0].id).toBe('budget-reflection');
+    expect(priceFeedback(state).budgetDifferenceFen).toBe(3000);
+    state = transition(state, { type: 'ANSWER', questionId: 'budget-reflection', value: { anticipated: 'no', close: 'no', reason: ' ' }, now: time + 1700 });
+    expect(transition(state, { type: 'COMPLETE', now: time + 1800 }).error).toContain('预算的判断');
+    state = transition(state, { type: 'ANSWER', questionId: 'budget-reflection', value: { anticipated: 'no', close: 'no', reason: '我估高了。' }, now: time + 1900 });
+    expect(transition(state, { type: 'COMPLETE', now: time + 2100 }).error).toContain('划算');
+  });
+  it('缺少名次、重复名次及超出量表的答案不会完成问卷', () => {
+    let state = questionnaireReady();
+    state = transition(state, { type: 'ANSWER', questionId: 'price-value', value: 'good-value', now: time + 1700 });
+    state = transition(state, { type: 'ANSWER', questionId: 'repurchase', value: '6', now: time + 1800 });
+    expect(state.answers.repurchase).toBeUndefined();
+    state = transition(state, { type: 'ANSWER', questionId: 'repurchase', value: '3', now: time + 1900 });
+    state = transition(state, { type: 'ANSWER', questionId: 'purchase-ranking', value: ['F', 'F', 'C'], now: time + 2000 });
+    expect(state.answers['purchase-ranking']).toBeUndefined();
+    state = transition(state, { type: 'ANSWER', questionId: 'purchase-ranking', value: ['F', '', 'C'], now: time + 2100 });
+    expect(transition(state, { type: 'COMPLETE', now: time + 2200 }).stage).toBe('questionnaire');
   });
 });
