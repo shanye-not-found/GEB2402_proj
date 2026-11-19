@@ -41,7 +41,7 @@ export function visibleQuestions(state: SessionState): Question[] {
 export function questionContext(question: Question, feedback: ReturnType<typeof priceFeedback>, porkReferenceFen: number): string {
   if (question.id === 'budget-reflection') return `您的实际花费比预算高 ${formatYuan(feedback.budgetDifferenceFen)} 元。`;
   if (question.id === 'price-value' && feedback.actualPricePer500gFen !== null) {
-    return `您购买的零食实际花费为 ${formatYuan(feedback.actualPricePer500gFen)} 元/500g。本题以猪肉约 ${porkReferenceFen / 100} 元/500g 作为比较基准。`;
+    return `您购买的零食实际花费为 ${formatYuan(feedback.actualPricePer500gFen)} 元/500g。本题以嫩牛肉约 ${porkReferenceFen / 100} 元/500g 作为比较基准。`;
   }
   return '';
 }
