@@ -1,10 +1,11 @@
 {
   "schemaVersion": "1.0",
-  "catalogVersion": "2026-11-19.1",
+  "catalogVersion": "2026-11-20.1",
   "currency": "CNY",
   "pricingPolicy": "采用截图醒目价格作为固定实验单价；不模拟优惠券、会员、满减、搭配购或前N件限制。多包装仍按原整份价格购买。",
+  "minimumPricePer500gFen": 3500,
   "sourceImageCount": 49,
-  "uniqueProductCount": 51,
+  "uniqueProductCount": 39,
   "requiredProductCount": 30,
   "missingProductCount": 0,
   "readyForExperiment": true,
@@ -62,32 +63,6 @@
       ]
     },
     {
-      "id": "bestore-banana-cake-160g",
-      "name": "良品铺子香蕉味北海道风味蛋糕",
-      "brand": "良品铺子",
-      "category": "糕点面包",
-      "flavor": "香蕉味",
-      "description": "口感绵柔，入口细腻，蛋香浓郁。",
-      "unitPriceFen": 725,
-      "unitWeightGrams": 160,
-      "saleUnitLabel": "袋",
-      "sortOrder": 3,
-      "specLabel": "约20g × 约8小袋（共160g，均分折算）",
-      "packaging": {
-        "innerCount": 8,
-        "innerCountApproximate": true,
-        "innerUnitLabel": "小袋",
-        "innerWeightBasis": "calculated_average",
-        "notes": "原图只给总重和约数内包数；按160÷8推算约20g/小袋，不能视为每小袋精确净含量。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": 20.0
-      },
-      "imagePath": "products/bestore-banana-cake-160g.webp",
-      "galleryImagePaths": [
-        "products/bestore-banana-cake-160g.webp"
-      ]
-    },
-    {
       "id": "bestore-organic-chestnuts-120g",
       "name": "良品铺子有机手剥甘栗",
       "brand": "良品铺子",
@@ -97,7 +72,7 @@
       "unitPriceFen": 1040,
       "unitWeightGrams": 120,
       "saleUnitLabel": "袋",
-      "sortOrder": 4,
+      "sortOrder": 3,
       "specLabel": "120g / 袋",
       "packaging": {
         "innerCount": null,
@@ -123,7 +98,7 @@
       "unitPriceFen": 680,
       "unitWeightGrams": 97,
       "saleUnitLabel": "盒",
-      "sortOrder": 5,
+      "sortOrder": 4,
       "specLabel": "约48.5g × 2包（共97g，均分折算）",
       "packaging": {
         "innerCount": 2,
@@ -149,7 +124,7 @@
       "unitPriceFen": 590,
       "unitWeightGrams": 84,
       "saleUnitLabel": "袋",
-      "sortOrder": 6,
+      "sortOrder": 5,
       "specLabel": "84g / 袋",
       "packaging": {
         "innerCount": null,
@@ -176,7 +151,7 @@
       "unitPriceFen": 590,
       "unitWeightGrams": 52,
       "saleUnitLabel": "袋",
-      "sortOrder": 7,
+      "sortOrder": 6,
       "specLabel": "52g / 袋",
       "packaging": {
         "innerCount": null,
@@ -202,7 +177,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 135,
       "saleUnitLabel": "袋",
-      "sortOrder": 8,
+      "sortOrder": 7,
       "specLabel": "135g / 袋",
       "packaging": {
         "innerCount": null,
@@ -228,7 +203,7 @@
       "unitPriceFen": 1050,
       "unitWeightGrams": 50,
       "saleUnitLabel": "袋",
-      "sortOrder": 9,
+      "sortOrder": 8,
       "specLabel": "50g / 袋",
       "packaging": {
         "innerCount": null,
@@ -254,7 +229,7 @@
       "unitPriceFen": 590,
       "unitWeightGrams": 15,
       "saleUnitLabel": "袋",
-      "sortOrder": 10,
+      "sortOrder": 9,
       "specLabel": "15g / 袋",
       "packaging": {
         "innerCount": null,
@@ -280,7 +255,7 @@
       "unitPriceFen": 1050,
       "unitWeightGrams": 50,
       "saleUnitLabel": "袋",
-      "sortOrder": 11,
+      "sortOrder": 10,
       "specLabel": "50g / 袋",
       "packaging": {
         "innerCount": null,
@@ -306,7 +281,7 @@
       "unitPriceFen": 719,
       "unitWeightGrams": 90,
       "saleUnitLabel": "袋",
-      "sortOrder": 12,
+      "sortOrder": 11,
       "specLabel": "90g / 袋",
       "packaging": {
         "innerCount": null,
@@ -332,7 +307,7 @@
       "unitPriceFen": 1050,
       "unitWeightGrams": 80,
       "saleUnitLabel": "袋",
-      "sortOrder": 13,
+      "sortOrder": 12,
       "specLabel": "80g / 袋",
       "packaging": {
         "innerCount": null,
@@ -358,7 +333,7 @@
       "unitPriceFen": 1250,
       "unitWeightGrams": 125,
       "saleUnitLabel": "袋",
-      "sortOrder": 14,
+      "sortOrder": 13,
       "specLabel": "约25g × 5包（共125g，均分折算）",
       "packaging": {
         "innerCount": 5,
@@ -384,7 +359,7 @@
       "unitPriceFen": 2390,
       "unitWeightGrams": 175,
       "saleUnitLabel": "盒",
-      "sortOrder": 15,
+      "sortOrder": 14,
       "specLabel": "25g × 7袋（共175g）",
       "packaging": {
         "innerCount": 7,
@@ -410,7 +385,7 @@
       "unitPriceFen": 1040,
       "unitWeightGrams": 120,
       "saleUnitLabel": "份",
-      "sortOrder": 16,
+      "sortOrder": 15,
       "specLabel": "约40g × 3片（共120g，均分折算）",
       "packaging": {
         "innerCount": 3,
@@ -436,7 +411,7 @@
       "unitPriceFen": 1050,
       "unitWeightGrams": 110,
       "saleUnitLabel": "袋",
-      "sortOrder": 17,
+      "sortOrder": 16,
       "specLabel": "110g / 袋",
       "packaging": {
         "innerCount": null,
@@ -462,7 +437,7 @@
       "unitPriceFen": 1480,
       "unitWeightGrams": 200,
       "saleUnitLabel": "袋",
-      "sortOrder": 18,
+      "sortOrder": 17,
       "specLabel": "200g / 袋（独立小包，包数未标注）",
       "packaging": {
         "innerCount": null,
@@ -489,7 +464,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 75,
       "saleUnitLabel": "份",
-      "sortOrder": 19,
+      "sortOrder": 18,
       "specLabel": "75g / 份（独立小包，包数未标注）",
       "packaging": {
         "innerCount": null,
@@ -516,7 +491,7 @@
       "unitPriceFen": 1490,
       "unitWeightGrams": 27,
       "saleUnitLabel": "盒",
-      "sortOrder": 20,
+      "sortOrder": 19,
       "specLabel": "3g × 9小包（共27g）",
       "packaging": {
         "innerCount": 9,
@@ -543,7 +518,7 @@
       "unitPriceFen": 1390,
       "unitWeightGrams": 160,
       "saleUnitLabel": "份",
-      "sortOrder": 21,
+      "sortOrder": 20,
       "specLabel": "160g / 份",
       "packaging": {
         "innerCount": null,
@@ -570,7 +545,7 @@
       "unitPriceFen": 1390,
       "unitWeightGrams": 60,
       "saleUnitLabel": "袋",
-      "sortOrder": 22,
+      "sortOrder": 21,
       "specLabel": "60g / 袋",
       "packaging": {
         "innerCount": null,
@@ -598,7 +573,7 @@
       "unitPriceFen": 1390,
       "unitWeightGrams": 135,
       "saleUnitLabel": "盒",
-      "sortOrder": 23,
+      "sortOrder": 22,
       "specLabel": "约45g × 3袋（共135g，均分折算）",
       "packaging": {
         "innerCount": 3,
@@ -625,7 +600,7 @@
       "unitPriceFen": 1190,
       "unitWeightGrams": 160,
       "saleUnitLabel": "盒",
-      "sortOrder": 24,
+      "sortOrder": 23,
       "specLabel": "约20g × 8小包（共160g，均分折算）",
       "packaging": {
         "innerCount": 8,
@@ -652,7 +627,7 @@
       "unitPriceFen": 790,
       "unitWeightGrams": 48,
       "saleUnitLabel": "盒",
-      "sortOrder": 25,
+      "sortOrder": 24,
       "specLabel": "约24g × 2袋（共48g，均分折算）",
       "packaging": {
         "innerCount": 2,
@@ -680,7 +655,7 @@
       "unitPriceFen": 1290,
       "unitWeightGrams": 160,
       "saleUnitLabel": "份",
-      "sortOrder": 26,
+      "sortOrder": 25,
       "specLabel": "160g / 份（独立小包，包数未标注）",
       "packaging": {
         "innerCount": null,
@@ -707,7 +682,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 96,
       "saleUnitLabel": "袋",
-      "sortOrder": 27,
+      "sortOrder": 26,
       "specLabel": "约8g × 12包（共96g，均分折算）",
       "packaging": {
         "innerCount": 12,
@@ -724,58 +699,6 @@
       ]
     },
     {
-      "id": "dingdong-sea-salt-milk-biscuits-180g",
-      "name": "叮咚定制海盐鲜牛乳小圆饼干",
-      "brand": "叮咚定制",
-      "category": "饼干",
-      "flavor": "海盐鲜牛乳味",
-      "description": "鲜牛乳与海盐制成，咸中带甜。",
-      "unitPriceFen": 990,
-      "unitWeightGrams": 180,
-      "saleUnitLabel": "袋",
-      "sortOrder": 28,
-      "specLabel": "180g / 袋（独立小包，包数未标注）",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": "小包",
-        "innerWeightBasis": "unknown",
-        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/dingdong-sea-salt-milk-biscuits-180g.webp",
-      "galleryImagePaths": [
-        "products/dingdong-sea-salt-milk-biscuits-180g.webp"
-      ]
-    },
-    {
-      "id": "zhouxiaojian-original-duck-neck-150g",
-      "name": "周小贱原味鸭脖",
-      "brand": "周小贱",
-      "category": "肉类零食",
-      "flavor": "原味",
-      "description": "整根鸭脖慢卤，肉质紧实。",
-      "unitPriceFen": 990,
-      "unitWeightGrams": 150,
-      "saleUnitLabel": "份",
-      "sortOrder": 29,
-      "specLabel": "30g × 5根（共150g）",
-      "packaging": {
-        "innerCount": 5,
-        "innerCountApproximate": false,
-        "innerUnitLabel": "根",
-        "innerWeightBasis": "explicit",
-        "notes": "标题明确标出单根规格和根数。",
-        "innerWeightGrams": 30,
-        "averageInnerWeightGrams": 30.0
-      },
-      "imagePath": "products/zhouxiaojian-original-duck-neck-150g.webp",
-      "galleryImagePaths": [
-        "products/zhouxiaojian-original-duck-neck-150g.webp"
-      ]
-    },
-    {
       "id": "crown-jollypong-puffed-barley-74g",
       "name": "克丽安大麦粒",
       "brand": "Crown 克丽安",
@@ -785,7 +708,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 74,
       "saleUnitLabel": "袋",
-      "sortOrder": 30,
+      "sortOrder": 27,
       "specLabel": "74g / 袋",
       "packaging": {
         "innerCount": null,
@@ -802,32 +725,6 @@
       ]
     },
     {
-      "id": "dingdong-brown-sugar-jelly-450g",
-      "name": "叮咚定制红糖味大碗冰粉",
-      "brand": "叮咚定制",
-      "category": "甜品果冻",
-      "flavor": "红糖味",
-      "description": "红糖味冰粉，配山楂、葡萄干、红小豆和花生芝麻碎。",
-      "unitPriceFen": 990,
-      "unitWeightGrams": 450,
-      "saleUnitLabel": "碗",
-      "sortOrder": 31,
-      "specLabel": "450g / 碗",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": null,
-        "innerWeightBasis": "unknown",
-        "notes": "原图未标注内包数，不根据展示数量猜测。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/dingdong-brown-sugar-jelly-450g.webp",
-      "galleryImagePaths": [
-        "products/dingdong-brown-sugar-jelly-450g.webp"
-      ]
-    },
-    {
       "id": "white-rabbit-peanut-toffee-120g",
       "name": "大白兔花生太妃糖",
       "brand": "大白兔",
@@ -837,7 +734,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 120,
       "saleUnitLabel": "份",
-      "sortOrder": 32,
+      "sortOrder": 28,
       "specLabel": "120g / 份（独立小包，包数未标注）",
       "packaging": {
         "innerCount": null,
@@ -863,7 +760,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 80,
       "saleUnitLabel": "包",
-      "sortOrder": 33,
+      "sortOrder": 29,
       "specLabel": "80g / 包（独立小包，包数未标注）",
       "packaging": {
         "innerCount": null,
@@ -880,58 +777,6 @@
       ]
     },
     {
-      "id": "strong-konjac-jelly-mixed-400g",
-      "name": "喜之郎蒟蒻果冻六口味分享装",
-      "brand": "喜之郎",
-      "category": "甜品果冻",
-      "flavor": "六种水果口味",
-      "description": "含红葡萄、水蜜桃、青梅、草莓、芒果和百香果口味。",
-      "unitPriceFen": 1250,
-      "unitWeightGrams": 400,
-      "saleUnitLabel": "袋",
-      "sortOrder": 34,
-      "specLabel": "400g / 袋（独立小包，包数未标注）",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": "小包",
-        "innerWeightBasis": "unknown",
-        "notes": "只标注6种口味，不等于6包；小包装件数未标注。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/strong-konjac-jelly-mixed-400g.webp",
-      "galleryImagePaths": [
-        "products/strong-konjac-jelly-mixed-400g.webp"
-      ]
-    },
-    {
-      "id": "sanqun-original-fabing-228g",
-      "name": "三群原味老面法饼",
-      "brand": "三群",
-      "category": "糕点面包",
-      "flavor": "原味",
-      "description": "老面发酵，松软带嚼劲。",
-      "unitPriceFen": 790,
-      "unitWeightGrams": 228,
-      "saleUnitLabel": "盒",
-      "sortOrder": 35,
-      "specLabel": "228g / 盒",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": null,
-        "innerWeightBasis": "unknown",
-        "notes": "原图未标注内包数，不根据展示数量猜测。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/sanqun-original-fabing-228g.webp",
-      "galleryImagePaths": [
-        "products/sanqun-original-fabing-228g.webp"
-      ]
-    },
-    {
       "id": "finute-garlic-shrimp-chips-82g",
       "name": "FINUTE 蒜味虾片",
       "brand": "FINUTE",
@@ -941,7 +786,7 @@
       "unitPriceFen": 1190,
       "unitWeightGrams": 82,
       "saleUnitLabel": "袋",
-      "sortOrder": 36,
+      "sortOrder": 30,
       "specLabel": "82g / 袋",
       "packaging": {
         "innerCount": null,
@@ -967,7 +812,7 @@
       "unitPriceFen": 690,
       "unitWeightGrams": 45,
       "saleUnitLabel": "份",
-      "sortOrder": 37,
+      "sortOrder": 31,
       "specLabel": "45g / 份",
       "packaging": {
         "innerCount": null,
@@ -993,7 +838,7 @@
       "unitPriceFen": 390,
       "unitWeightGrams": 40,
       "saleUnitLabel": "袋",
-      "sortOrder": 38,
+      "sortOrder": 32,
       "specLabel": "40g / 袋",
       "packaging": {
         "innerCount": null,
@@ -1019,7 +864,7 @@
       "unitPriceFen": 1690,
       "unitWeightGrams": 128,
       "saleUnitLabel": "盒",
-      "sortOrder": 39,
+      "sortOrder": 33,
       "specLabel": "128g / 盒（独立小包，包数未标注）",
       "packaging": {
         "innerCount": null,
@@ -1036,58 +881,6 @@
       ]
     },
     {
-      "id": "xiangu-fiber-vegetable-crackers-165g",
-      "name": "纤谷纤焙十蔬咸香脆饼干",
-      "brand": "纤谷纤焙",
-      "category": "饼干",
-      "flavor": "十蔬咸香",
-      "description": "添加十种蔬菜，烘烤制成，独立小包。",
-      "unitPriceFen": 690,
-      "unitWeightGrams": 165,
-      "saleUnitLabel": "袋",
-      "sortOrder": 40,
-      "specLabel": "165g / 袋（独立小包，包数未标注）",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": "小包",
-        "innerWeightBasis": "unknown",
-        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/xiangu-fiber-vegetable-crackers-165g.webp",
-      "galleryImagePaths": [
-        "products/xiangu-fiber-vegetable-crackers-165g.webp"
-      ]
-    },
-    {
-      "id": "relie-sweet-cream-popcorn-120g",
-      "name": "热烈奶油甜味爆米花",
-      "brand": "热烈",
-      "category": "谷物膨化",
-      "flavor": "奶油甜味",
-      "description": "玉米粒膨松酥脆，带奶油甜香。",
-      "unitPriceFen": 580,
-      "unitWeightGrams": 120,
-      "saleUnitLabel": "包",
-      "sortOrder": 41,
-      "specLabel": "120g / 包",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": null,
-        "innerWeightBasis": "unknown",
-        "notes": "原图未标注内包数，不根据展示数量猜测。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/relie-sweet-cream-popcorn-120g.webp",
-      "galleryImagePaths": [
-        "products/relie-sweet-cream-popcorn-120g.webp"
-      ]
-    },
-    {
       "id": "omou-original-beef-crisps-20g",
       "name": "Omou 噢哞原切牛肉脆",
       "brand": "Omou 噢哞",
@@ -1097,7 +890,7 @@
       "unitPriceFen": 1390,
       "unitWeightGrams": 20,
       "saleUnitLabel": "包",
-      "sortOrder": 42,
+      "sortOrder": 34,
       "specLabel": "20g / 包",
       "packaging": {
         "innerCount": null,
@@ -1114,32 +907,6 @@
       ]
     },
     {
-      "id": "orion-tomato-hollow-potato-sticks-70g",
-      "name": "好丽友呀！土豆番茄酱味空心薯条",
-      "brand": "好丽友",
-      "category": "薯片薯粒",
-      "flavor": "番茄酱味",
-      "description": "空心薯条，酸甜酥脆。",
-      "unitPriceFen": 458,
-      "unitWeightGrams": 70,
-      "saleUnitLabel": "袋",
-      "sortOrder": 43,
-      "specLabel": "70g / 袋",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": null,
-        "innerWeightBasis": "unknown",
-        "notes": "原图未标注内包数，不根据展示数量猜测。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/orion-tomato-hollow-potato-sticks-70g.webp",
-      "galleryImagePaths": [
-        "products/orion-tomato-hollow-potato-sticks-70g.webp"
-      ]
-    },
-    {
       "id": "lusheng-beef-crispy-bone-66g",
       "name": "绿盛牛脆骨",
       "brand": "绿盛",
@@ -1149,7 +916,7 @@
       "unitPriceFen": 990,
       "unitWeightGrams": 66,
       "saleUnitLabel": "份",
-      "sortOrder": 44,
+      "sortOrder": 35,
       "specLabel": "66g / 份",
       "packaging": {
         "innerCount": null,
@@ -1175,7 +942,7 @@
       "unitPriceFen": 1290,
       "unitWeightGrams": 108,
       "saleUnitLabel": "包",
-      "sortOrder": 45,
+      "sortOrder": 36,
       "specLabel": "108g / 包",
       "packaging": {
         "innerCount": null,
@@ -1192,32 +959,6 @@
       ]
     },
     {
-      "id": "master-kong-lemon-soda-sandwich-100g",
-      "name": "康师傅3+2柠檬味苏打夹心饼干",
-      "brand": "康师傅",
-      "category": "饼干",
-      "flavor": "柠檬味",
-      "description": "三层苏打饼，两层柠檬味夹心。",
-      "unitPriceFen": 690,
-      "unitWeightGrams": 100,
-      "saleUnitLabel": "盒",
-      "sortOrder": 46,
-      "specLabel": "100g / 盒（独立小包，包数未标注）",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": "小包",
-        "innerWeightBasis": "unknown",
-        "notes": "页面提及独立包装或图上展示小包装，未明确标出包数。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/master-kong-lemon-soda-sandwich-100g.webp",
-      "galleryImagePaths": [
-        "products/master-kong-lemon-soda-sandwich-100g.webp"
-      ]
-    },
-    {
       "id": "frutips-mixed-fruit-gummies-60g",
       "name": "趣满果花心杂果果汁软糖",
       "brand": "趣满果",
@@ -1227,7 +968,7 @@
       "unitPriceFen": 790,
       "unitWeightGrams": 60,
       "saleUnitLabel": "份",
-      "sortOrder": 47,
+      "sortOrder": 37,
       "specLabel": "60g / 份",
       "packaging": {
         "innerCount": null,
@@ -1244,32 +985,6 @@
       ]
     },
     {
-      "id": "california-field-crunch-peanuts-238g",
-      "name": "加州原野鱼皮花生",
-      "brand": "加州原野",
-      "category": "坚果栗类",
-      "flavor": "",
-      "description": "高油酸花生，烘烤制成。",
-      "unitPriceFen": 1590,
-      "unitWeightGrams": 238,
-      "saleUnitLabel": "罐",
-      "sortOrder": 48,
-      "specLabel": "238g / 罐",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": null,
-        "innerWeightBasis": "unknown",
-        "notes": "原图未标注内包数，不根据展示数量猜测。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/california-field-crunch-peanuts-238g.webp",
-      "galleryImagePaths": [
-        "products/california-field-crunch-peanuts-238g.webp"
-      ]
-    },
-    {
       "id": "glico-tomato-garden-biscuits-50g",
       "name": "格力高番茄味菜园小饼",
       "brand": "格力高",
@@ -1279,7 +994,7 @@
       "unitPriceFen": 450,
       "unitWeightGrams": 50,
       "saleUnitLabel": "份",
-      "sortOrder": 49,
+      "sortOrder": 38,
       "specLabel": "50g / 份",
       "packaging": {
         "innerCount": null,
@@ -1305,7 +1020,7 @@
       "unitPriceFen": 1980,
       "unitWeightGrams": 200,
       "saleUnitLabel": "盒",
-      "sortOrder": 50,
+      "sortOrder": 39,
       "specLabel": "200g / 盒",
       "packaging": {
         "innerCount": null,
@@ -1319,32 +1034,6 @@
       "imagePath": "products/dingdong-v5-butter-egg-rolls-200g.webp",
       "galleryImagePaths": [
         "products/dingdong-v5-butter-egg-rolls-200g.webp"
-      ]
-    },
-    {
-      "id": "oishi-sweet-corn-pops-80g",
-      "name": "上好佳玉米田园泡",
-      "brand": "上好佳",
-      "category": "谷物膨化",
-      "flavor": "经典口味",
-      "description": "玉米与小麦制成，清香酥脆。",
-      "unitPriceFen": 559,
-      "unitWeightGrams": 80,
-      "saleUnitLabel": "袋",
-      "sortOrder": 51,
-      "specLabel": "80g / 袋",
-      "packaging": {
-        "innerCount": null,
-        "innerCountApproximate": false,
-        "innerUnitLabel": null,
-        "innerWeightBasis": "unknown",
-        "notes": "原图未标注内包数，不根据展示数量猜测。",
-        "innerWeightGrams": null,
-        "averageInnerWeightGrams": null
-      },
-      "imagePath": "products/oishi-sweet-corn-pops-80g.webp",
-      "galleryImagePaths": [
-        "products/oishi-sweet-corn-pops-80g.webp"
       ]
     }
   ]
